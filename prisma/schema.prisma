@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  uid               String    @id @default(uuid()) @map("uid")
+  firstname         String
+  lastname          String
+  email             String    @unique
+  passwordHash      String
+  isVerified        Boolean
+  verificationToken String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  status            String
+  invoices          Invoice[]
+
+  @@map("users")
+}
+
+model Seller {
+  sid      String    @id @default(uuid()) @map("sid")
+  name     String
+  address  String
+  city     String?
+  phone    String?
+  email    String?
+  invoices Invoice[]
+
+  @@map("sellers")
+}
+
+model Invoice {
+  iid            String   @id @default(uuid()) @map("iid")
+  invoice_number String
+  invoice_date   DateTime @default(now())
+  invoice_image  String
+
+  uid  String
+  user User   @relation(fields: [uid], references: [uid])
+
+  sid    String
+  seller Seller @relation(fields: [sid], references: [sid])
+
+  // Store products as a JSON array in this model
+  products Json
+
+  @@map("invoices")
+}
