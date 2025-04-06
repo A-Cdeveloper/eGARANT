@@ -6,28 +6,52 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const formatDate = (dateString: string | undefined) => {
-  return dateString ? format(new Date(dateString), "dd.MM.yyyy") : "-";
+export const formatDate = (date: Date) => {
+  return date ? format(date, "dd.MM.yyyy") : "-";
 };
 
-export const endDate = (dateString: string, period: number) => {
-  const newDate = addMonths(new Date(dateString), period);
-  return newDate.toLocaleDateString("rs-SR");
+export const endDate = (date: Date, period: number) => {
+  return addMonths(date, period);
 };
 
-export const getNumDaysFromToday = (dateString: string) => {
-  const givenDate = new Date(dateString);
+export const getNumDaysFromToday = (date: Date) => {
   const today = new Date();
-  return differenceInCalendarDays(today, givenDate);
+  return differenceInCalendarDays(today, date);
 };
 
-export const getDaysBetweenDates = (
-  startDateString: string,
-  endDateString: string
-) => {
-  return differenceInCalendarDays(startDateString, endDateString);
+export const getDaysBetweenDates = (startDate: Date, endDate: Date) => {
+  return differenceInCalendarDays(startDate, endDate);
 };
 
+///////////////////////////////////////////////
 export const formatPrice = (price: number) => {
   return `${price.toFixed(2)} RSD`;
 };
+
+/////////////////////////////////////////////
+
+export function getJsonArrayLength(value: unknown): number {
+  return Array.isArray(value) ? value.length : 0;
+}
+
+export function reduceJsonArray<T extends object>(
+  value: unknown,
+  reducer: (acc: number, item: T) => number,
+  initial = 0
+): number {
+  if (!Array.isArray(value)) return initial;
+
+  return value.reduce((acc, item) => {
+    if (typeof item === "object" && item !== null) {
+      return reducer(acc, item as T);
+    }
+    return acc;
+  }, initial);
+}
+
+export function mapJsonArray<T, R>(
+  value: unknown,
+  callback: (item: T, index: number) => R
+): R[] {
+  return Array.isArray(value) ? value.map(callback) : [];
+}
