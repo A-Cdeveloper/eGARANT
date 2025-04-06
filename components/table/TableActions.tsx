@@ -22,13 +22,13 @@ const TableActions = ({ id }: { id: string }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <Link href={`/bills/${id}`} className="w-full">
+            <Link href={`/invoices/${id}`} className="w-full">
               Detalji
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href={`/bills/${id}/edit `} className="w-full">
+            <Link href={`/invoices/${id}/edit `} className="w-full">
               Izmeni
             </Link>
           </DropdownMenuItem>
