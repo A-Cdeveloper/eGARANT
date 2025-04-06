@@ -9,8 +9,10 @@ import { Button } from "@/components/ui/button";
 
 export default function Error({
   error,
+  title = "Došlo je do greske.",
 }: {
   error: Error & { digest?: string };
+  title?: string;
 }) {
   const router = useRouter();
   useEffect(() => {
@@ -19,20 +21,19 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="w-full h-full flex justify-center items-center text-center">
-      <div>
-        <Image
-          src={errorImg}
-          alt="error"
-          width={100}
-          height={70}
-          className="mx-auto"
-        />
-        <h2 className="my-5 text-[26px]">{error.message}</h2>
-        <Button size="lg" variant="primary" onClick={() => router.push("/")}>
-          Pokušaj ponovo
-        </Button>
-      </div>
+    <div className="w-full h-[40vh] flex flex-col justify-center items-center text-center bg-white">
+      <Image
+        src={errorImg}
+        alt="errorImg"
+        width={95}
+        height={80}
+        className="mx-auto"
+      />
+      <h2 className="text-[20px] my-5">{title}</h2>
+
+      <Button size="lg" variant="primary" onClick={() => router.push("/")}>
+        Pokušaj ponovo
+      </Button>
     </div>
   );
 }
