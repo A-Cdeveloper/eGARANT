@@ -9,7 +9,7 @@ const UserArea = () => {
     <div className="flex items-center">
       {/* <Button variant="secondary">Login</Button> */}
 
-      <Link href="/bills/add-new">
+      <Link href="/invoices/add-new">
         <Button variant="secondary">Dodaj račun</Button>
       </Link>
       <BurgerButton />
