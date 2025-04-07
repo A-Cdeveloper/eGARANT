@@ -5,40 +5,40 @@ export const parseError = (error: unknown): string => {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     switch (error.code) {
       case "P2002":
-        return `Unique constraint failed: ${JSON.stringify(
+        return `Neuspeh zbog jedinstvenog ograničenja: ${JSON.stringify(
           error.meta?.target
         )}`;
       case "P2025":
-        return "Record not found.";
+        return "Zapis nije pronađen.";
       case "P2003":
-        return "Invalid reference to related data.";
+        return "Nevažeća referenca na povezane podatke.";
       case "P2001":
-        return "No matching record found.";
+        return "Nema odgovarajućeg zapisa.";
       default:
-        return `Database error`;
+        return `Greška u bazi podataka.`;
     }
   }
 
   if (error instanceof Prisma.PrismaClientUnknownRequestError)
-    return "Unknown database error occurred.";
+    return "Došlo je do nepoznate greške u bazi podataka.";
   if (error instanceof Prisma.PrismaClientRustPanicError)
-    return "A critical database error occurred.";
+    return "Došlo je do kritične greške u bazi podataka.";
   if (error instanceof Prisma.PrismaClientInitializationError)
-    return "Could not connect to the database.";
+    return "Nije moguće povezati se sa bazom podataka.";
   if (error instanceof Prisma.PrismaClientValidationError)
-    return "Invalid data provided.";
+    return "Uneti podaci nisu validni.";
 
   if (typeof error === "string") return error;
 
   if (error instanceof Error) {
-    // Network error, fetch error, etc.
-    if (error.name === "FetchError") return "Failed to fetch data.";
+    // Mrežna greška, fetch greška, itd.
+    if (error.name === "FetchError") return "Neuspešno preuzimanje podataka.";
     if (error.message.includes("NetworkError"))
-      return "Network error occurred.";
+      return "Došlo je do mrežne greške.";
     return error.message;
   }
 
-  // Handle HTTP error responses (for example, if using fetch and you manually throw an error)
+  // Obrada HTTP grešaka (npr. ako koristite fetch i ručno bacate grešku)
   if (
     typeof error === "object" &&
     error !== null &&
@@ -46,8 +46,8 @@ export const parseError = (error: unknown): string => {
     "statusText" in error
   ) {
     const err = error as { status: number; statusText: string };
-    return `HTTP Error ${err.status}: ${err.statusText}`;
+    return `HTTP greška ${err.status}: ${err.statusText}`;
   }
 
-  return "An unexpected error occurred.";
+  return "Došlo je do neočekivane greške.";
 };
