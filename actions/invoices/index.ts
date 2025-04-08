@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { parseError } from "@/lib/errors";
 import { InvoiceWithSeller } from "@/types";
 import { Invoice, Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 //const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -87,4 +88,17 @@ export const addInvoice = async (
   } catch (error) {
     return { data: null, error: parseError(error) };
   }
+};
+
+export const deleteInvoice = async (iid: string) => {
+  try {
+    await prisma.invoice.delete({
+      where: {
+        iid,
+      },
+    });
+  } catch (error) {
+    return { data: null, error: parseError(error) };
+  }
+  revalidatePath("/invoices");
 };
