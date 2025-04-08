@@ -1,3 +1,4 @@
+import { deleteInvoice } from "@/actions/invoices";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,7 +34,12 @@ const TableActions = ({ id }: { id: string }) => {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Obriši</DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => deleteInvoice(id)}
+          >
+            Obriši
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
