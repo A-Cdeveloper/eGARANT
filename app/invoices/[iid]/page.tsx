@@ -6,8 +6,10 @@ import { ErrorMessage } from "@/components/errors/ErrorMessage";
 import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
-import InvoiceHead from "../_components/_products/InvoiceHead";
-import InvoiceProductsList from "../_components/_products/InvoiceProductsList";
+import InvoiceHead from "../_components/InvoiceHead";
+import InvoiceProductsList from "../_components/InvoiceProductsList";
+import InvoiceImage from "../_components/InvoiceImage";
+import InvoiceButtons from "../_components/InvoiceButtons";
 
 type Params = Promise<{ iid: string }>;
 
@@ -51,6 +53,10 @@ export const Invoice = async ({ id }: { id: string }) => {
     <>
       <InvoiceHead invoice={invoice as InvoiceWithSeller} />
       <InvoiceProductsList invoice={invoice as InvoiceWithSeller} />
+      {invoice?.invoice_image && (
+        <InvoiceImage iurl={invoice?.invoice_image as string} />
+      )}
+      <InvoiceButtons iid={invoice?.iid as string} />
     </>
   );
 };
