@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "picsum.photos",
       },
+      {
+        protocol: "https",
+        hostname: "moccasin-obedient-guanaco-455.mypinata.cloud",
+      },
     ],
   },
 };
