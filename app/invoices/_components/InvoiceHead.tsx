@@ -5,6 +5,8 @@ import {
   reduceJsonArray,
 } from "@/lib/utils";
 import { InvoiceWithSeller, Product } from "@/types";
+import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const InvoiceHead = ({ invoice }: { invoice: InvoiceWithSeller }) => {
@@ -20,7 +22,22 @@ const InvoiceHead = ({ invoice }: { invoice: InvoiceWithSeller }) => {
           Trgovac: <br />
           <strong>{invoice?.seller.name}</strong>
         </p>
-        <p>{invoice?.seller.address}</p>
+        <p>
+          {invoice?.seller.address}, {invoice?.seller.city}
+        </p>
+        <p>
+          <Link
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              invoice?.seller.address
+            )},+${invoice?.seller.city}`}
+            target="_blank"
+            className="text-primary underline text-sm hover:text-secondary flex items-center gap-1"
+            rel="noopener noreferrer"
+            title={`${invoice?.seller.address}, ${invoice?.seller.city}`}
+          >
+            pokaži na mapi <ExternalLink size={14} />
+          </Link>
+        </p>
       </div>
 
       <div className="w-auto">
