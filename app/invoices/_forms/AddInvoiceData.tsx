@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Invoice, Prisma, Seller } from "@prisma/client";
 import AddInvoiceImage from "./AddInvoiceImage";
+import { useRouter } from "next/navigation";
 
 const AddInvoiceData = ({
   sellers,
@@ -19,24 +20,27 @@ const AddInvoiceData = ({
   sellers: Seller[];
   addNewSellerHandler: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const router = useRouter();
+
   const submitHanadler = async (formData: FormData) => {
     const data = Object.fromEntries(formData);
 
-    const image = data.invoice_image as File;
-    const imageName = image.name;
-
     const selectedDate = new Date(data.date.toString());
     selectedDate.setHours(14, 0, 0, 0);
+
     const newInvoice = {
       invoice_date: selectedDate,
-      invoice_image: imageName,
+      invoice_image: data.invoice_image as string,
       uid: "1",
       sid: data.sid as string,
       products: [] as Prisma.InputJsonValue,
     };
 
     await addInvoice(newInvoice as Invoice);
-    //console.log({ ...data, invoice_image: imageName });
+
+    router.push("/invoices");
+
+    //console.log(newInvoice);
   };
 
   return (
@@ -75,10 +79,15 @@ const AddInvoiceData = ({
           <span className="font-semibold"> Datum prometa:</span>
           <DatePickerWrapper />
         </div>
-
-        {/* Iamge */}
+        {/* Products */}
         <div className="border-b border-gray-200 py-2">
-          <span className="font-semibold"> Dodaj sliku fiskalnog računa:</span>
+          <span className="font-semibold"> Dodaj artikle:</span>
+          #artikli
+        </div>
+
+        {/* Image */}
+        <div className="border-b border-gray-200 py-2">
+          <span className="font-semibold"> Fotografija fiskalnog računa:</span>
           <AddInvoiceImage />
         </div>
       </div>
