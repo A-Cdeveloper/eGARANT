@@ -8,8 +8,6 @@ const AddInvoiceProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [showNewProductForm, setShowNewProductForm] = useState(false);
 
-  console.log(products);
-
   const addNewFormular = () => {
     setShowNewProductForm(true);
   };

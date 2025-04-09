@@ -1,7 +1,12 @@
 // lib/errors.ts
 import { Prisma } from "@prisma/client";
+import { ZodError } from "zod";
 
-export const parseError = (error: unknown): string => {
+export const parseError = (error: unknown): string | string[] => {
+  if (error instanceof ZodError) {
+    return error.errors.map((err) => `${err.message}`);
+  }
+
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     switch (error.code) {
       case "P2002":

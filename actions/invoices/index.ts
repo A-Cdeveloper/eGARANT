@@ -77,7 +77,6 @@ export const getUserInvoice = async (
 export const addInvoice = async (
   invoice: Omit<Invoice, "iid">
 ): Promise<{ data: Invoice | null; error: string | null }> => {
-  console.log(invoice.products);
   try {
     const numberOfInvoices = await prisma.invoice.count();
     const newInvoice = await prisma.invoice.create({
