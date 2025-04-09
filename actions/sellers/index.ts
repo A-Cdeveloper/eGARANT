@@ -24,7 +24,6 @@ export const addNewSeller = async (
   data: Omit<Seller, "sid"> | null;
   error: string | string[] | null;
 }> => {
-  await wait(8000);
   const seller = {
     name: formData.get("name") as string,
     address: formData.get("address") as string,

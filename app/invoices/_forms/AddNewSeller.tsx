@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useActionState } from "react";
 import FormErrorMessages from "./FormErrorMessages";
 import FormSuccessMessage from "./FormSuccessMessage";
+import SubmitButton from "@/components/buttons/SubmitButton";
 
 const AddNewSeller = ({
   addNewSellerHandler,
@@ -67,9 +68,10 @@ const AddNewSeller = ({
               >
                 Zatvori
               </Button>
-              <Button size={"sm"} disabled={isPending}>
+              {/* <Button size={"sm"} disabled={isPending}>
                 Dodaj u listu
-              </Button>
+              </Button> */}
+              <SubmitButton size={"sm"}>Dodaj u listu</SubmitButton>
             </div>
           </form>
         </div>
