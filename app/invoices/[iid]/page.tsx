@@ -19,7 +19,7 @@ const InvoicePage = async ({ params }: { params: Params }) => {
   return (
     <>
       <BackButton to="/invoices" />
-      <h2>Detalji računa {iid}</h2>
+      <h2>Detalji računa</h2>
       <Suspense
         fallback={
           <>

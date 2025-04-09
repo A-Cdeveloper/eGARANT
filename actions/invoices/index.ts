@@ -5,7 +5,7 @@ import prisma from "@/lib/db";
 import { parseError } from "@/lib/errors";
 import { getOptimizedImageURL, optimizeImage, pinata } from "@/pinata/config";
 import { InvoiceWithSeller } from "@/types";
-import { Invoice, Prisma } from "@prisma/client";
+import { Invoice } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 //const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -13,7 +13,8 @@ import { revalidatePath } from "next/cache";
 export const getAllUserInvoices = async (
   uid: string
 ): Promise<
-  { data: InvoiceWithSeller[]; error: null } | { data: null; error: string }
+  | { data: InvoiceWithSeller[]; error: null }
+  | { data: null; error: string | string[] }
 > => {
   try {
     const invoices = await prisma.invoice.findMany({
@@ -44,7 +45,8 @@ export const getUserInvoice = async (
   iid: string,
   uid: string
 ): Promise<
-  { data: InvoiceWithSeller; error: null } | { data: null; error: string }
+  | { data: InvoiceWithSeller; error: null }
+  | { data: null; error: string | string[] }
 > => {
   try {
     const invoice = await prisma.invoice.findUnique({
@@ -76,7 +78,7 @@ export const getUserInvoice = async (
 ////////////////////////////////////////////////////////////////////
 export const addInvoice = async (
   invoice: Omit<Invoice, "iid">
-): Promise<{ data: Invoice | null; error: string | null }> => {
+): Promise<{ data: Invoice | null; error: string | string[] | null }> => {
   try {
     const numberOfInvoices = await prisma.invoice.count();
     const newInvoice = await prisma.invoice.create({
@@ -92,6 +94,7 @@ export const addInvoice = async (
     return { data: null, error: parseError(error) };
   }
 };
+
 ////////////////////////////////////////////////////////////////////
 export const deleteInvoice = async (iid: string) => {
   try {

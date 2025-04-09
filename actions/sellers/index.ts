@@ -15,7 +15,7 @@ export const getAllSellers = async () => {
   }
 };
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+// const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const addNewSeller = async (
   prevFormData: any,
