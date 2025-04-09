@@ -15,6 +15,14 @@ const buttonVariants = cva(
           "bg-transparent text-secondary border-2 border-secondary hover:bg-secondary hover:text-white",
         danger:
           "bg-transparent text-red-500 border-2 border-red-500 hover:bg-red-500 hover:text-white",
+
+        primary_full:
+          "bg-primary text-white border-2 border-primary hover:bg-transparent hover:text-primary",
+        secondary_full:
+          "bg-secondary text-white border-2 border-secondary hover:bg-transparent hover:text-secondary",
+        danger_full:
+          "bg-red-500 text-white border-2 border-red-500 hover:transparent hover:text-red-500",
+
         ghost:
           "bg-transparent text-primary hover:text-secondary focus:text-secondary focus-visible:ring-0",
       },
