@@ -36,7 +36,7 @@ const AddInvoiceImage = () => {
     <div className="flex flex-wrap justify-between">
       <Input type="hidden" name="invoice_image" value={fileUrl || ""} />
       {!fileUrl && !loading && (
-        <div className="w-1/2">
+        <div className="w-full sm:w-1/2">
           <Input
             type="file"
             name="invoice_image"
@@ -44,7 +44,6 @@ const AddInvoiceImage = () => {
             accept="image/*"
             onChange={handleFileChange}
             className="hidden"
-            required
           />
 
           <label

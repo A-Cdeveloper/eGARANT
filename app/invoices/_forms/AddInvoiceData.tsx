@@ -12,6 +12,7 @@ import {
 import { Invoice, Prisma, Seller } from "@prisma/client";
 import AddInvoiceImage from "./AddInvoiceImage";
 import { useRouter } from "next/navigation";
+import AddInvoiceProducts from "./AddInvoiceProducts";
 
 const AddInvoiceData = ({
   sellers,
@@ -33,14 +34,15 @@ const AddInvoiceData = ({
       invoice_image: data.invoice_image as string,
       uid: "1",
       sid: data.sid as string,
-      products: [] as Prisma.InputJsonValue,
+      products: data.products as Prisma.InputJsonValue,
     };
 
     await addInvoice(newInvoice as Invoice);
 
     router.push("/invoices");
 
-    //console.log(newInvoice);
+    console.log(newInvoice);
+    console.log(newInvoice.products);
   };
 
   return (
@@ -50,7 +52,7 @@ const AddInvoiceData = ({
           <>
             <h3>Izaberi prodajno mesto iz liste:</h3>
             <Select name="sid" required>
-              <SelectTrigger className="w-[200px] sm:w-[280px] bg-white">
+              <SelectTrigger className="w-full sm:w-[280px] bg-white">
                 <SelectValue placeholder="" />
               </SelectTrigger>
               <SelectContent className="bg-white">
@@ -81,8 +83,7 @@ const AddInvoiceData = ({
         </div>
         {/* Products */}
         <div className="border-b border-gray-200 py-2">
-          <span className="font-semibold"> Dodaj artikle:</span>
-          #artikli
+          <AddInvoiceProducts />
         </div>
 
         {/* Image */}
@@ -91,8 +92,10 @@ const AddInvoiceData = ({
           <AddInvoiceImage />
         </div>
       </div>
-      <div className="flex justify-end mt-4">
-        <Button>Dodaj račun</Button>
+      <div className="flex justify-center sm:justify-end mt-4">
+        <Button variant="secondary_full" size="lg" className="w-full sm:w-auto">
+          Sačuvaj račun
+        </Button>
       </div>
     </form>
   );
