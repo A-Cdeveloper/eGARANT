@@ -5,7 +5,8 @@ import prisma from "@/lib/db";
 import { parseError } from "@/lib/errors";
 import { getOptimizedImageURL, optimizeImage, pinata } from "@/pinata/config";
 import { InvoiceWithSeller } from "@/types";
-import { Invoice } from "@prisma/client";
+import { InvoiceFormSchema } from "@/zod/invoiceShemas";
+import { Invoice, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 //const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -77,8 +78,32 @@ export const getUserInvoice = async (
 
 ////////////////////////////////////////////////////////////////////
 export const addInvoice = async (
-  invoice: Omit<Invoice, "iid">
-): Promise<{ data: Invoice | null; error: string | string[] | null }> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  prevFormData: any,
+  formData: FormData
+): Promise<{
+  data: Omit<Invoice, "iid" | "invoice_number"> | null;
+  error: string | string[] | null;
+}> => {
+  const invoice = {
+    sid: formData.get("sid") as string,
+    uid: "1",
+    invoice_date: formData.get("date")
+      ? new Date(formData.get("date") as string)
+      : undefined,
+    invoice_image: formData.get("invoice_image") as string,
+    products: formData.get("products") as Prisma.JsonValue,
+  };
+
+  const parsed = InvoiceFormSchema.safeParse(invoice);
+
+  if (!parsed.success) {
+    return {
+      data: invoice as Omit<Invoice, "iid" | "invoice_number">,
+      error: parseError(parsed.error),
+    };
+  }
+
   try {
     const numberOfInvoices = await prisma.invoice.count();
     const newInvoice = await prisma.invoice.create({

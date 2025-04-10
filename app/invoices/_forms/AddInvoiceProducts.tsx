@@ -1,11 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Product } from "@/types";
-import { useState } from "react";
+import React, { useState } from "react";
 import ProductForm from "./ProductForm";
+import { Prisma } from "@prisma/client";
 
-const AddInvoiceProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+const AddInvoiceProducts = ({
+  defaultProducts,
+}: {
+  defaultProducts: Prisma.JsonArray;
+}) => {
+  const [products, setProducts] = useState<Product[]>(
+    defaultProducts as Product[]
+  );
   const [showNewProductForm, setShowNewProductForm] = useState(false);
 
   const addNewFormular = () => {
@@ -53,7 +60,13 @@ const AddInvoiceProducts = () => {
       )}
 
       <div className="text-end my-3">
-        <Button size="sm" onClick={addNewFormular}>
+        <Button
+          size="sm"
+          onClick={(e: React.MouseEvent) => {
+            e.preventDefault();
+            addNewFormular();
+          }}
+        >
           Dodaj proizvod
         </Button>
       </div>

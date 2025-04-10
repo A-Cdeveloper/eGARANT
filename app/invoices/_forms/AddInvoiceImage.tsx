@@ -9,7 +9,7 @@ import React, { useCallback, useState } from "react";
 
 const AddInvoiceImage = () => {
   const [fileUrl, setFileUrl] = useState<string>();
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string | string[]>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleFileChange = useCallback(

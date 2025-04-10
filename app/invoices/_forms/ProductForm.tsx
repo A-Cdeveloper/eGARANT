@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Product } from "@/types";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 const ProductForm = ({
   removeNewFormular,
@@ -21,6 +21,7 @@ const ProductForm = ({
   const productPriceRef = useRef<HTMLInputElement>(null);
   const productQuantityRef = useRef<HTMLInputElement>(null);
   const productPeriodRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string>("");
 
   const addProductHandler = () => {
     const productName = productNameRef.current?.value;
@@ -29,7 +30,7 @@ const ProductForm = ({
     const productPeriod = productPeriodRef.current?.value;
 
     if (!productName || !productPrice || !productPeriod || !productQuantity) {
-      alert("Morate popuniti sva polja");
+      setError("Morate popuniti sva polja");
       return;
     }
 
@@ -58,74 +59,77 @@ const ProductForm = ({
   const isEdit = mode === "edit";
 
   return (
-    <div
-      className={`grid grid-cols-1 md:grid-cols-[200px_60px_100px_100px_1fr_1fr] p-2 lg:p-4 items-center text-[14px] 
+    <>
+      <div
+        className={`grid grid-cols-1 md:grid-cols-[200px_60px_100px_100px_1fr_1fr] p-2 lg:p-4 items-center text-[14px] 
  space-y-[8px] sm:space-y-0 gap-5 ${
    !isEdit ? "bg-green-900/20" : ""
  } my-5 md:my-1`}
-    >
-      <div>
-        <Textarea
-          defaultValue={isEdit ? product?.name : ""}
-          placeholder="Naziv artikla"
-          ref={productNameRef}
-          className="p-1"
-          required
-        />
-      </div>
-      <div className="flex gap-1 items-center">
-        <Input
-          type="number"
-          defaultValue={isEdit ? product?.quantity : ""}
-          ref={productQuantityRef}
-          className="p-1 md:placeholder:opacity-0"
-          placeholder="Količina"
-          required
-        />
-      </div>
-
-      <div className="flex gap-1 items-center">
-        <Input
-          type="number"
-          defaultValue={isEdit ? product?.unit_price : ""}
-          ref={productPriceRef}
-          className="p-1 md:placeholder:opacity-0"
-          placeholder="Cena"
-          required
-        />{" "}
-        RSD
-      </div>
-
-      <div>
+      >
+        <div>
+          <Textarea
+            defaultValue={isEdit ? product?.name : ""}
+            placeholder="Naziv artikla"
+            ref={productNameRef}
+            className="p-1"
+            required
+          />
+        </div>
         <div className="flex gap-1 items-center">
           <Input
             type="number"
-            defaultValue={isEdit ? product?.garantee : ""}
-            className="w-full md:w-[60px] p-1 md:placeholder:opacity-0"
-            ref={productPeriodRef}
-            placeholder="Garancija"
+            defaultValue={isEdit ? product?.quantity : ""}
+            ref={productQuantityRef}
+            className="p-1 md:placeholder:opacity-0"
+            placeholder="Količina"
+            required
+          />
+        </div>
+
+        <div className="flex gap-1 items-center">
+          <Input
+            type="number"
+            defaultValue={isEdit ? product?.unit_price : ""}
+            ref={productPriceRef}
+            className="p-1 md:placeholder:opacity-0"
+            placeholder="Cena"
             required
           />{" "}
-          mes
+          RSD
+        </div>
+
+        <div>
+          <div className="flex gap-1 items-center">
+            <Input
+              type="number"
+              defaultValue={isEdit ? product?.garantee : ""}
+              className="w-full md:w-[60px] p-1 md:placeholder:opacity-0"
+              ref={productPeriodRef}
+              placeholder="Garancija"
+              required
+            />{" "}
+            mes
+          </div>
+        </div>
+        <div className="flex gap-1 justify-end  bg-red-900/200">
+          <Button size="sm" variant="primary" onClick={addProductHandler}>
+            Snimi
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={
+              isEdit && product
+                ? () => removeProductHandler(product.productId)
+                : removeNewFormular
+            }
+          >
+            Ukloni
+          </Button>
         </div>
       </div>
-      <div className="flex gap-1 justify-end  bg-red-900/200">
-        <Button size="sm" variant="primary" onClick={addProductHandler}>
-          Snimi
-        </Button>
-        <Button
-          size="sm"
-          variant="secondary"
-          onClick={
-            isEdit && product
-              ? () => removeProductHandler(product.productId)
-              : removeNewFormular
-          }
-        >
-          Ukloni
-        </Button>
-      </div>
-    </div>
+      {error && <div className="text-red-600 text-sm">{error}</div>}
+    </>
   );
 };
 
