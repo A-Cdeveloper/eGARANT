@@ -27,6 +27,8 @@ const InvoiceHead = ({ invoice }: { invoice: InvoiceWithSeller }) => {
         <p>
           {invoice?.seller.address}, {invoice?.seller.city}
         </p>
+        <p>{invoice?.seller.phone}</p>
+        <p>{invoice?.seller.email}</p>
         <p>
           <Link
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

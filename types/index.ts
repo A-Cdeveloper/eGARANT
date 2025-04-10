@@ -15,6 +15,8 @@ export type InvoiceWithSeller = Prisma.InvoiceGetPayload<{
         name: true;
         address: true;
         city: true;
+        phone: true;
+        email: true;
       };
     };
   };

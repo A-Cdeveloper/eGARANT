@@ -30,6 +30,8 @@ export const getAllUserInvoices = async (
             name: true,
             address: true,
             city: true,
+            phone: true,
+            email: true,
           },
         },
       },
@@ -61,6 +63,8 @@ export const getUserInvoice = async (
             name: true,
             address: true,
             city: true,
+            phone: true,
+            email: true,
           },
         },
       },
@@ -118,6 +122,29 @@ export const addInvoice = async (
   } catch (error) {
     return { data: null, error: parseError(error) };
   }
+};
+
+export const updateInvoice = async (
+  formData: FormData
+): Promise<{
+  data: Omit<Invoice, "iid" | "invoice_number"> | null;
+  error: string | string[] | null;
+}> => {
+  console.log(formData);
+  // const invoice = {
+  //   sid: formData.get("sid") as string,
+  //   uid: "1",
+  //   invoice_date: formData.get("date")
+  //     ? new Date(formData.get("date") as string)
+  //     : undefined,
+  //   invoice_image: formData.get("invoice_image") as string,
+  //   products: formData.get("products") as Prisma.JsonValue,
+  // };
+
+  return {
+    data: null,
+    error: null,
+  };
 };
 
 ////////////////////////////////////////////////////////////////////
