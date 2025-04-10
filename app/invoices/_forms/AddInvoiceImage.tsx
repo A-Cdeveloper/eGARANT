@@ -7,8 +7,8 @@ import Image from "next/image";
 
 import React, { useCallback, useState } from "react";
 
-const AddInvoiceImage = () => {
-  const [fileUrl, setFileUrl] = useState<string>();
+const AddInvoiceImage = ({ invoice_image }: { invoice_image: string }) => {
+  const [fileUrl, setFileUrl] = useState<string>(invoice_image);
   const [error, setError] = useState<string | string[]>("");
   const [loading, setLoading] = useState<boolean>(false);
 
