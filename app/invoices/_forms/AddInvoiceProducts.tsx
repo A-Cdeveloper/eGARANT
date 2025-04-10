@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Product } from "@/types";
@@ -71,7 +72,6 @@ const AddInvoiceProducts = ({
         </Button>
       </div>
     </>
-    // <ProductStatus date={billdate} gperiod={product.gperiod as number} />
   );
 };
 
