@@ -8,6 +8,7 @@ const SubmitButton = ({
   className,
   size,
   variant,
+  disabled,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -20,6 +21,7 @@ const SubmitButton = ({
     | "primary_full"
     | "secondary_full"
     | "danger_full";
+  disabled?: boolean;
 }) => {
   const { pending } = useFormStatus();
   return (
@@ -27,7 +29,7 @@ const SubmitButton = ({
       size={size}
       variant={variant}
       className={className}
-      disabled={pending}
+      disabled={pending || disabled}
     >
       <>
         {pending ? (

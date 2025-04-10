@@ -7,17 +7,24 @@ import Image from "next/image";
 
 import React, { useCallback, useState } from "react";
 
-const AddInvoiceImage = ({ invoice_image }: { invoice_image: string }) => {
+const AddInvoiceImage = ({
+  invoice_image,
+  setIsLoading,
+  loading,
+}: {
+  invoice_image: string;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
+}) => {
   const [fileUrl, setFileUrl] = useState<string>(invoice_image);
   const [error, setError] = useState<string | string[]>("");
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleFileChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = e.target.files?.[0];
       if (!selectedFile) return;
 
-      setLoading(true);
+      setIsLoading(true);
 
       const { data, error } = await uploadInvoiceImage(selectedFile as File);
 
@@ -27,9 +34,9 @@ const AddInvoiceImage = ({ invoice_image }: { invoice_image: string }) => {
         setFileUrl(data?.url as string);
         setError("");
       }
-      setLoading(false);
+      setIsLoading(false);
     },
-    []
+    [setIsLoading]
   );
 
   return (

@@ -12,12 +12,13 @@ import {
 import { Seller } from "@prisma/client";
 import AddInvoiceImage from "./AddInvoiceImage";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import AddInvoiceProducts from "./AddInvoiceProducts";
 import FormErrorMessages from "./FormErrorMessages";
 import { Product } from "@/types";
 
 import { useRouter } from "next/navigation";
+import SubmitButton from "@/components/buttons/SubmitButton";
 
 const AddInvoiceData = ({
   sellers,
@@ -30,6 +31,7 @@ const AddInvoiceData = ({
     data: null,
     error: null,
   });
+  const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -93,21 +95,23 @@ const AddInvoiceData = ({
 
           {/* Image */}
           <div className="border-b border-gray-200 py-2">
-            <span className="font-semibold">
-              {" "}
-              Fotografija fiskalnog računa:
-            </span>
-            <AddInvoiceImage invoice_image={state.data?.invoice_image || ""} />
+            <span className="font-semibold">Fotografija fiskalnog računa:</span>
+            <AddInvoiceImage
+              invoice_image={state.data?.invoice_image || ""}
+              loading={loadingImageUpload}
+              setIsLoading={setLoadingImageUpload}
+            />
           </div>
         </div>
         <div className="flex justify-center sm:justify-end mt-4">
-          <Button
-            variant="secondary_full"
+          <SubmitButton
             size="lg"
             className="w-full sm:w-auto"
+            variant="secondary_full"
+            disabled={loadingImageUpload}
           >
             Sačuvaj račun
-          </Button>
+          </SubmitButton>
         </div>
       </form>
     </>
