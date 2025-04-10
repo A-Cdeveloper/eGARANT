@@ -23,7 +23,9 @@ const ProductForm = ({
   const productPeriodRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string>("");
 
-  const addProductHandler = () => {
+  /////////////////////////////////////////////////////////////////////
+
+  const handleProduct = (mode: "add" | "edit", id?: string) => {
     const productName = productNameRef.current?.value;
     const productPrice = Number(productPriceRef.current?.value);
     const productQuantity = Number(productQuantityRef.current?.value);
@@ -34,15 +36,35 @@ const ProductForm = ({
       return;
     }
 
-    const newProduct = {
-      productId: crypto.randomUUID(),
-      name: productName,
-      quantity: productQuantity,
-      unit_price: productPrice,
-      garantee: +productPeriod,
-    } as unknown as Product;
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
+    if (mode === "add") {
+      const newProduct = {
+        productId: crypto.randomUUID(),
+        name: productName,
+        quantity: productQuantity,
+        unit_price: productPrice,
+        garantee: +productPeriod,
+      } as unknown as Product;
 
+      setProducts((prevProducts) => [...prevProducts, newProduct]);
+    }
+
+    if (mode === "edit" && id) {
+      setProducts((prevProducts) =>
+        prevProducts.map((p) =>
+          p.productId === id
+            ? {
+                ...p,
+                name: productName,
+                quantity: productQuantity,
+                unit_price: productPrice,
+                garantee: +productPeriod,
+              }
+            : p
+        )
+      );
+    }
+
+    // Clear form
     productNameRef.current!.value = "";
     productPriceRef.current!.value = "";
     productQuantityRef.current!.value = "";
@@ -61,7 +83,7 @@ const ProductForm = ({
   return (
     <>
       <div
-        className={`grid grid-cols-1 md:grid-cols-[200px_60px_100px_100px_1fr_1fr] p-2 lg:p-4 items-center text-[14px] 
+        className={`grid grid-cols-1 md:grid-cols-[200px_60px_100px_80px_1fr_1fr] p-2 lg:p-4 items-center text-[14px] 
  space-y-[8px] sm:space-y-0 gap-5 ${
    !isEdit ? "bg-green-900/20" : ""
  } my-5 md:my-1`}
@@ -112,9 +134,21 @@ const ProductForm = ({
           </div>
         </div>
         <div className="flex gap-1 justify-end  bg-red-900/200">
-          <Button size="sm" variant="primary" onClick={addProductHandler}>
-            Snimi
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={(e) => {
+              e.preventDefault();
+              if (isEdit && product?.productId) {
+                handleProduct("edit", product.productId);
+              } else {
+                handleProduct("add");
+              }
+            }}
+          >
+            {isEdit ? "Izmeni" : "Sačuvaj"}
           </Button>
+
           <Button
             size="sm"
             variant="secondary"
@@ -124,7 +158,7 @@ const ProductForm = ({
                 : removeNewFormular
             }
           >
-            Ukloni
+            Obriši
           </Button>
         </div>
       </div>
