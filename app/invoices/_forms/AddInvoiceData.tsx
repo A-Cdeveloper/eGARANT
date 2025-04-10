@@ -33,8 +33,6 @@ const AddInvoiceData = ({
 
   const router = useRouter();
 
-  console.log(state);
-
   useEffect(() => {
     if (state.error === null && state.data) {
       router.push("/invoices/");
@@ -84,7 +82,7 @@ const AddInvoiceData = ({
           {/* Datum */}
           <div className="border-b border-gray-200 py-2">
             <span className="font-semibold"> Datum prometa:</span>
-            <DatePickerWrapper />
+            <DatePickerWrapper defaultValue={new Date()} />
           </div>
           {/* Products */}
           <div className="border-b border-gray-200 py-2">
@@ -99,7 +97,7 @@ const AddInvoiceData = ({
               {" "}
               Fotografija fiskalnog računa:
             </span>
-            <AddInvoiceImage />
+            <AddInvoiceImage invoice_image={state.data?.invoice_image || ""} />
           </div>
         </div>
         <div className="flex justify-center sm:justify-end mt-4">
