@@ -13,7 +13,7 @@ const EditInvoicePage = async ({ params }: { params: Params }) => {
   return (
     <div>
       <BackButton to="/invoices" />
-      <h2>Izmeni račun {iid}</h2>
+      <h2>Izmena računa</h2>
       <EditInvoiceForm invoice={invoice as InvoiceWithSeller} />
     </div>
   );
