@@ -68,9 +68,6 @@ const AddNewSeller = ({
               >
                 Zatvori
               </Button>
-              {/* <Button size={"sm"} disabled={isPending}>
-                Dodaj u listu
-              </Button> */}
               <SubmitButton size={"sm"}>Dodaj u listu</SubmitButton>
             </div>
           </form>
