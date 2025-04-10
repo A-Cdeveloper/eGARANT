@@ -32,7 +32,7 @@ const ProductForm = ({
     const productPeriod = productPeriodRef.current?.value;
 
     if (!productName || !productPrice || !productPeriod || !productQuantity) {
-      setError("Morate popuniti sva polja");
+      setError("Morate popuniti sve detalje artikla.");
       return;
     }
 
@@ -46,6 +46,13 @@ const ProductForm = ({
       } as unknown as Product;
 
       setProducts((prevProducts) => [...prevProducts, newProduct]);
+
+      // Clear form
+      productNameRef.current!.value = "";
+      productPriceRef.current!.value = "";
+      productQuantityRef.current!.value = "";
+      productPeriodRef.current!.value = "";
+      setShowNewProductForm(false);
     }
 
     if (mode === "edit" && id) {
@@ -63,13 +70,6 @@ const ProductForm = ({
         )
       );
     }
-
-    // Clear form
-    productNameRef.current!.value = "";
-    productPriceRef.current!.value = "";
-    productQuantityRef.current!.value = "";
-    productPeriodRef.current!.value = "";
-    setShowNewProductForm(false);
   };
 
   const removeProductHandler = (id: string) => {
