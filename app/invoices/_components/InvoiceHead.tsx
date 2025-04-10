@@ -9,7 +9,13 @@ import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import React, { useMemo } from "react";
 
-const InvoiceHead = ({ invoice }: { invoice: InvoiceWithSeller }) => {
+const InvoiceHead = ({
+  invoice,
+  mode,
+}: {
+  invoice: InvoiceWithSeller;
+  mode?: string;
+}) => {
   const total = useMemo(() => {
     return reduceJsonArray<Product>(
       invoice?.products,
@@ -43,20 +49,21 @@ const InvoiceHead = ({ invoice }: { invoice: InvoiceWithSeller }) => {
           </Link>
         </p>
       </div>
-
-      <div className="w-auto">
-        <div>
-          Datum prometa:{" "}
-          <strong>{formatDate(invoice?.invoice_date as Date)} </strong>
+      {mode !== "edit" && (
+        <div className="w-auto">
+          <div>
+            Datum prometa:{" "}
+            <strong>{formatDate(invoice?.invoice_date as Date)} </strong>
+          </div>
+          <div>
+            Ukupan iznos: <strong>{formatPrice(total)}</strong>
+          </div>
+          <div>
+            Ukupno artikla:{" "}
+            <strong>{getJsonArrayLength(invoice?.products)}</strong>
+          </div>
         </div>
-        <div>
-          Ukupan iznos: <strong>{formatPrice(total)}</strong>
-        </div>
-        <div>
-          Ukupno artikla:{" "}
-          <strong>{getJsonArrayLength(invoice?.products)}</strong>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
