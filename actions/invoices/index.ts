@@ -125,26 +125,51 @@ export const addInvoice = async (
 };
 
 export const updateInvoice = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  prevFormData: any,
   formData: FormData
 ): Promise<{
-  data: Omit<Invoice, "iid" | "invoice_number"> | null;
+  data: Omit<Invoice, "invoice_number"> | null;
   error: string | string[] | null;
 }> => {
-  console.log(formData);
-  // const invoice = {
-  //   sid: formData.get("sid") as string,
-  //   uid: "1",
-  //   invoice_date: formData.get("date")
-  //     ? new Date(formData.get("date") as string)
-  //     : undefined,
-  //   invoice_image: formData.get("invoice_image") as string,
-  //   products: formData.get("products") as Prisma.JsonValue,
-  // };
-
-  return {
-    data: null,
-    error: null,
+  const invoice = {
+    iid: formData.get("iid") as string,
+    sid: formData.get("sid") as string,
+    uid: "1",
+    invoice_date: formData.get("date")
+      ? new Date(formData.get("date") as string)
+      : undefined,
+    invoice_image: formData.get("invoice_image") as string,
+    products: formData.get("products") as Prisma.JsonValue,
   };
+
+  const parsed = InvoiceFormSchema.safeParse(invoice);
+
+  if (!parsed.success) {
+    return {
+      data: invoice as Omit<Invoice, "invoice_number">,
+      error: parseError(parsed.error),
+    };
+  }
+
+  try {
+    const updatedInvoice = await prisma.invoice.update({
+      where: {
+        iid: invoice.iid,
+      },
+      data: {
+        ...invoice,
+        products: JSON.parse(invoice.products as string),
+      },
+    });
+    revalidatePath("/invoices");
+    return {
+      data: updatedInvoice,
+      error: null,
+    };
+  } catch (error) {
+    return { data: null, error: parseError(error) };
+  }
 };
 
 ////////////////////////////////////////////////////////////////////
