@@ -9,16 +9,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Modal from "../modals/Modal";
+import ActiionsMobileItems from "./ActiionsMobileItems";
 
 const TableActions = ({ id }: { id: string }) => {
   const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
 
   const closeModal = () => {
     setShowModal(false);
   };
+
   return (
     <>
       {showModal && (
@@ -31,7 +34,12 @@ const TableActions = ({ id }: { id: string }) => {
           }}
         />
       )}
-      <div className="text-start sm:text-center">
+      {/* MOBILE */}
+      <div className="flex flex-wrap justify-end gap-4 items-center sm:hidden">
+        <ActiionsMobileItems setShowModal={setShowModal} id={id} />
+      </div>
+      {/* DESKTOP */}
+      <div className="hidden sm:block text-start sm:text-center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -40,16 +48,18 @@ const TableActions = ({ id }: { id: string }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <Link href={`/invoices/${id}`} className="w-full">
-                Detalji
-              </Link>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => router.push(`/invoices/${id}`)}
+            >
+              Detalji računa
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/invoices/${id}/edit `} className="w-full">
-                Izmeni
-              </Link>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => router.push(`/invoices/${id}/edit`)}
+            >
+              Izmeni račun
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -58,7 +68,7 @@ const TableActions = ({ id }: { id: string }) => {
                 setShowModal(true);
               }}
             >
-              Obriši
+              Obriši račun
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
