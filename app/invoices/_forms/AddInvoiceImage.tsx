@@ -73,7 +73,12 @@ const AddInvoiceImage = ({
             height={300}
             className="mx-auto sm:mx-0 border my-2"
           />
-          <CloseButton onClick={() => setFileUrl("")} />
+          <CloseButton
+            onClick={() => {
+              setFileUrl("");
+              setIsDirty(true);
+            }}
+          />
         </div>
       )}
       {loading && (

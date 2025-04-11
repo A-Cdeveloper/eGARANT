@@ -8,15 +8,19 @@ import AddInvoiceProducts from "./AddInvoiceProducts";
 import { updateInvoice } from "@/actions/invoices";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import FormErrorMessages from "./FormErrorMessages";
+import { useBeforeUnloadPrompt } from "@/hooks/useBeforeUnloadPrompt";
 
 const EditInvoiceForm = ({ invoice }: { invoice: InvoiceWithSeller }) => {
+  const [isDirty, setIsDirty] = useState(false);
+  const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
   const [state, action] = useActionState(updateInvoice, {
     data: null,
     error: null,
   });
 
+  useBeforeUnloadPrompt(isDirty);
   const router = useRouter();
 
   useEffect(() => {
@@ -42,19 +46,28 @@ const EditInvoiceForm = ({ invoice }: { invoice: InvoiceWithSeller }) => {
           {/* Datum */}
           <div className="border-b border-gray-200 py-2">
             <span className="font-semibold"> Izmeni datum:</span>
-            <DatePickerWrapper defaultValue={invoice?.invoice_date as Date} />
+            <DatePickerWrapper
+              defaultValue={invoice?.invoice_date as Date}
+              setIsDirty={setIsDirty}
+            />
           </div>
           {/* Products */}
           <div className="border-b border-gray-200 py-2">
             <AddInvoiceProducts
               defaultProducts={invoice?.products as Product[]}
+              setIsDirty={setIsDirty}
             />
           </div>
 
           {/* Image */}
           <div className="border-b border-gray-200 py-2">
             <span className="font-semibold">Fotografija fiskalnog računa:</span>
-            <AddInvoiceImage invoice_image={invoice?.invoice_image} />
+            <AddInvoiceImage
+              invoice_image={invoice?.invoice_image}
+              setIsDirty={setIsDirty}
+              setIsLoading={setLoadingImageUpload}
+              loading={loadingImageUpload}
+            />
           </div>
         </div>
         <div className="flex justify-center sm:justify-end mt-4">

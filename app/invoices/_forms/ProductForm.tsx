@@ -9,12 +9,14 @@ const ProductForm = ({
   mode,
   product,
   setProducts,
+  setIsDirty,
   setShowNewProductForm,
 }: {
   removeNewFormular: () => void;
   mode?: string;
   product?: Product;
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  setIsDirty: React.Dispatch<React.SetStateAction<boolean>>;
   setShowNewProductForm: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const productNameRef = useRef<HTMLTextAreaElement>(null);
@@ -94,6 +96,7 @@ const ProductForm = ({
             placeholder="Naziv artikla"
             ref={productNameRef}
             className="p-1"
+            onChange={() => setIsDirty(true)}
             required
           />
         </div>
@@ -104,6 +107,7 @@ const ProductForm = ({
             ref={productQuantityRef}
             className="p-1 md:placeholder:opacity-0"
             placeholder="Količina"
+            onChange={() => setIsDirty(true)}
             required
           />
         </div>
@@ -115,6 +119,7 @@ const ProductForm = ({
             ref={productPriceRef}
             className="p-1 md:placeholder:opacity-0"
             placeholder="Cena"
+            onChange={() => setIsDirty(true)}
             required
           />{" "}
           RSD
@@ -128,6 +133,7 @@ const ProductForm = ({
               className="w-full md:w-[60px] p-1 md:placeholder:opacity-0"
               ref={productPeriodRef}
               placeholder="Garancija"
+              onChange={() => setIsDirty(true)}
               required
             />{" "}
             mes

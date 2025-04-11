@@ -51,6 +51,7 @@ const AddInvoiceProducts = ({
             setShowNewProductForm={setShowNewProductForm}
             mode="edit"
             product={product}
+            setIsDirty={setIsDirty}
           />
         );
       })}
@@ -61,6 +62,7 @@ const AddInvoiceProducts = ({
           setProducts={setProducts}
           setShowNewProductForm={setShowNewProductForm}
           mode="add"
+          setIsDirty={setIsDirty}
         />
       )}
 
