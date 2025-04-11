@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import FormErrorMessages from "./FormErrorMessages";
 import { useBeforeUnloadPrompt } from "@/hooks/useBeforeUnloadPrompt";
+import { useBlockNavigation } from "@/hooks/useBlockNavigation";
+import Modal from "@/components/modals/Modal";
 
 const EditInvoiceForm = ({ invoice }: { invoice: InvoiceWithSeller }) => {
   const [isDirty, setIsDirty] = useState(false);
@@ -20,8 +22,10 @@ const EditInvoiceForm = ({ invoice }: { invoice: InvoiceWithSeller }) => {
     error: null,
   });
 
-  useBeforeUnloadPrompt(isDirty);
   const router = useRouter();
+  useBeforeUnloadPrompt(isDirty);
+  const { showModal, cancelNavigation, confirmNavigation } =
+    useBlockNavigation(isDirty);
 
   useEffect(() => {
     if (state.error === null && state.data) {
@@ -31,6 +35,14 @@ const EditInvoiceForm = ({ invoice }: { invoice: InvoiceWithSeller }) => {
 
   return (
     <>
+      {showModal && (
+        <Modal
+          title="Da li ste sigurni?"
+          message="Promene nece biti sačuvane."
+          onClose={cancelNavigation}
+          onConfirm={confirmNavigation}
+        />
+      )}
       {state.error !== null && state.data !== null && (
         <>
           <FormErrorMessages errors={state.error as string[]} />
