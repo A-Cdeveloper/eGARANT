@@ -136,6 +136,7 @@ const AddInvoiceData = ({
             className="w-full sm:w-auto"
             variant="secondary_full"
             disabled={loadingImageUpload}
+            onClick={() => setIsDirty(false)}
           >
             Sačuvaj račun
           </SubmitButton>

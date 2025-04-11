@@ -87,6 +87,7 @@ const EditInvoiceForm = ({ invoice }: { invoice: InvoiceWithSeller }) => {
             variant="secondary_full"
             size="lg"
             className="w-full sm:w-auto"
+            onClick={() => setIsDirty(false)}
           >
             Izmeni račun
           </Button>

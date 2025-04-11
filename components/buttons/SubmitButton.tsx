@@ -9,6 +9,7 @@ const SubmitButton = ({
   size,
   variant,
   disabled,
+  onClick,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -22,14 +23,17 @@ const SubmitButton = ({
     | "secondary_full"
     | "danger_full";
   disabled?: boolean;
+  onClick?: () => void;
 }) => {
   const { pending } = useFormStatus();
   return (
     <Button
+      type="submit"
       size={size}
       variant={variant}
       className={className}
       disabled={pending || disabled}
+      onClick={onClick}
     >
       <>
         {pending ? (
