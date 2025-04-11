@@ -6,7 +6,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const InvoiceButtons = ({ iid }: { iid: string }) => {
+const InvoiceButtons = ({
+  iid,
+  invoice_image,
+}: {
+  iid: string;
+  invoice_image: string;
+}) => {
   const [showModal, setShowModal] = useState(false);
 
   const closeModal = () => {
@@ -29,7 +35,11 @@ const InvoiceButtons = ({ iid }: { iid: string }) => {
       )}
 
       <div className="flex flex-wrap justify-center gap-5 my-4">
-        <Button>Preuzmi račun</Button>
+        <Button>
+          <Link href={invoice_image} download={true} target="_blank">
+            Preuzmi račun
+          </Link>
+        </Button>
         <Button>
           <Link href={`/invoices/${iid}/edit`}>Izmeni racun</Link>
         </Button>

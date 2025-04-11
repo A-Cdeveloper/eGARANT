@@ -56,7 +56,10 @@ export const Invoice = async ({ id }: { id: string }) => {
       {invoice?.invoice_image && (
         <InvoiceImage iurl={invoice?.invoice_image as string} />
       )}
-      <InvoiceButtons iid={invoice?.iid as string} />
+      <InvoiceButtons
+        iid={invoice?.iid as string}
+        invoice_image={invoice?.invoice_image as string}
+      />
     </>
   );
 };
