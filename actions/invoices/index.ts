@@ -35,6 +35,9 @@ export const getAllUserInvoices = async (
           },
         },
       },
+      orderBy: {
+        invoice_date: "desc",
+      },
     });
 
     return { data: invoices, error: null };
