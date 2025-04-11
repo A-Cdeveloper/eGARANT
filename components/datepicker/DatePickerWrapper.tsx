@@ -8,21 +8,22 @@ export function DatePickerWrapper({
   defaultValue,
   setIsDirty,
 }: {
-  defaultValue: Date;
+  defaultValue?: Date;
   setIsDirty: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [selected, setSelected] = useState<Date | undefined>(defaultValue);
+  const [selected, setSelected] = useState<Date | undefined>(
+    defaultValue ?? undefined
+  );
 
   return (
     <>
-      <Input type="hidden" name="date" value={selected?.toISOString() ?? ""} />
-      <DatePicker
-        value={selected}
-        onChange={() => {
-          setIsDirty(true);
-          setSelected(undefined);
-        }}
+      <Input
+        type="hidden"
+        name="date"
+        value={selected?.toISOString() ?? ""}
+        onChange={() => setIsDirty(true)}
       />
+      <DatePicker value={selected} onChange={setSelected} />
     </>
   );
 }
