@@ -25,10 +25,10 @@ const Modal = ({ onClose, onConfirm, message }: ModalType) => {
       onClick={onClose}
     >
       <div className="bg-white text-primary w-1/4 max-w-[250px] h-auto flex flex-col justify-center items-center rounded-md">
-        <h3 className="w-full text-center py-2 border-b border-gray-300">
+        <h2 className="w-full text-center py-2 border-b border-gray-300 text-[20px] bg-primary text-white">
           {message}
-        </h3>
-        <div className="flex gap-x-2 mt-4 pb-5">
+        </h2>
+        <div className="flex gap-5 mt-4 pb-5">
           <Button variant="primary" onClick={onClose}>
             Odustani
           </Button>
