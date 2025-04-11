@@ -3,6 +3,8 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header/Header";
 import Footer from "@/components/layout/footer/Footer";
+import InternetStatus from "@/components/layout/InternetStatus";
+import { Toaster } from "@/components/ui/sonner";
 
 const roboto = Roboto({
   variable: "--roboto",
@@ -25,11 +27,13 @@ export default function RootLayout({
   return (
     <html lang="rs">
       <body className={`${roboto.className} antialiased`}>
+        <InternetStatus />
         <Header />
 
         <main className="flex-1 p-5 pt-[120px] w-full max-w-lg mx-auto flex flex-col justify-start">
           {children}
         </main>
+        <Toaster />
 
         <Footer />
       </body>
