@@ -24,7 +24,7 @@ const InvoiceButtons = ({
     <>
       {showModal && (
         <Modal
-          message="Da li ste sigurni?"
+          title="Da li ste sigurni?"
           onClose={closeModal}
           onConfirm={async () => {
             await deleteInvoice(iid);

@@ -7,10 +7,11 @@ import { useEffect, useState } from "react";
 type ModalType = {
   onClose: () => void;
   onConfirm: () => void;
-  message: string;
+  message?: string;
+  title: string;
 };
 
-const Modal = ({ onClose, onConfirm, message }: ModalType) => {
+const Modal = ({ onClose, onConfirm, message, title }: ModalType) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -26,8 +27,9 @@ const Modal = ({ onClose, onConfirm, message }: ModalType) => {
     >
       <div className="bg-white text-primary w-1/4 max-w-[250px] h-auto flex flex-col justify-center items-center rounded-md">
         <h2 className="w-full text-center py-2 border-b border-gray-300 text-[20px] bg-primary text-white">
-          {message}
+          {title}
         </h2>
+        <p className="text-center py-1">{message}</p>
         <div className="flex gap-5 mt-4 pb-5">
           <Button variant="primary" onClick={onClose}>
             Odustani

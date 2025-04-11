@@ -20,6 +20,8 @@ import { Product } from "@/types";
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/components/buttons/SubmitButton";
 import { useBeforeUnloadPrompt } from "@/hooks/useBeforeUnloadPrompt";
+import { useBlockNavigation } from "@/hooks/useBlockNavigation";
+import Modal from "@/components/modals/Modal";
 
 const AddInvoiceData = ({
   sellers,
@@ -34,9 +36,12 @@ const AddInvoiceData = ({
   });
   const [isDirty, setIsDirty] = useState(false);
   const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
+
   const router = useRouter();
 
   useBeforeUnloadPrompt(isDirty);
+  const { showModal, cancelNavigation, confirmNavigation } =
+    useBlockNavigation(isDirty);
 
   useEffect(() => {
     if (state.error === null && state.data) {
@@ -46,6 +51,15 @@ const AddInvoiceData = ({
 
   return (
     <>
+      {showModal && (
+        <Modal
+          title="Da li ste sigurni?"
+          message="Promene nece biti sačuvane."
+          onClose={cancelNavigation}
+          onConfirm={confirmNavigation}
+        />
+      )}
+
       {state.error !== null && state.data !== null && (
         <>
           <FormErrorMessages errors={state.error as string[]} />
