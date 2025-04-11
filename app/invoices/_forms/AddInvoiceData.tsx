@@ -19,6 +19,7 @@ import { Product } from "@/types";
 
 import { useRouter } from "next/navigation";
 import SubmitButton from "@/components/buttons/SubmitButton";
+import { useBeforeUnloadPrompt } from "@/hooks/useBeforeUnloadPrompt";
 
 const AddInvoiceData = ({
   sellers,
@@ -31,9 +32,11 @@ const AddInvoiceData = ({
     data: null,
     error: null,
   });
+  const [isDirty, setIsDirty] = useState(false);
   const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
-
   const router = useRouter();
+
+  useBeforeUnloadPrompt(isDirty);
 
   useEffect(() => {
     if (state.error === null && state.data) {
@@ -53,7 +56,11 @@ const AddInvoiceData = ({
           {sellers && sellers.length > 0 && (
             <>
               <h3>Izaberi prodajno mesto iz liste:</h3>
-              <Select name="sid" defaultValue={state.data?.sid}>
+              <Select
+                name="sid"
+                defaultValue={state.data?.sid}
+                onValueChange={() => setIsDirty(true)}
+              >
                 <SelectTrigger className="w-full sm:w-[280px] bg-white">
                   <SelectValue placeholder="" />
                 </SelectTrigger>
@@ -74,6 +81,7 @@ const AddInvoiceData = ({
               onClick={(e: React.MouseEvent) => {
                 e.preventDefault();
                 addNewSellerHandler(true);
+                setIsDirty(true);
               }}
               className="h-6 p-0"
             >
@@ -84,12 +92,16 @@ const AddInvoiceData = ({
           {/* Datum */}
           <div className="border-b border-gray-200 py-2">
             <span className="font-semibold"> Datum prometa:</span>
-            <DatePickerWrapper defaultValue={new Date()} />
+            <DatePickerWrapper
+              defaultValue={new Date()}
+              setIsDirty={setIsDirty}
+            />
           </div>
           {/* Products */}
           <div className="border-b border-gray-200 py-2">
             <AddInvoiceProducts
               defaultProducts={(state.data?.products as Product[]) || []}
+              setIsDirty={setIsDirty}
             />
           </div>
 
@@ -100,6 +112,7 @@ const AddInvoiceData = ({
               invoice_image={state.data?.invoice_image || ""}
               loading={loadingImageUpload}
               setIsLoading={setLoadingImageUpload}
+              setIsDirty={setIsDirty}
             />
           </div>
         </div>

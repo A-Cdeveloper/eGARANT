@@ -8,8 +8,10 @@ import { Prisma } from "@prisma/client";
 
 const AddInvoiceProducts = ({
   defaultProducts,
+  setIsDirty,
 }: {
   defaultProducts: Prisma.JsonArray;
+  setIsDirty: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [products, setProducts] = useState<Product[]>(
     defaultProducts as Product[]
@@ -18,10 +20,12 @@ const AddInvoiceProducts = ({
 
   const addNewFormular = () => {
     setShowNewProductForm(true);
+    setIsDirty(true);
   };
 
   const removeNewFormular = () => {
     setShowNewProductForm(false);
+    setIsDirty(false);
   };
 
   return (

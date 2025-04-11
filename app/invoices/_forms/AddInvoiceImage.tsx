@@ -10,10 +10,12 @@ import React, { useCallback, useState } from "react";
 const AddInvoiceImage = ({
   invoice_image,
   setIsLoading,
+  setIsDirty,
   loading,
 }: {
   invoice_image: string;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsDirty: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;
 }) => {
   const [fileUrl, setFileUrl] = useState<string>(invoice_image);
@@ -25,6 +27,7 @@ const AddInvoiceImage = ({
       if (!selectedFile) return;
 
       setIsLoading(true);
+      setIsDirty(true);
 
       const { data, error } = await uploadInvoiceImage(selectedFile as File);
 
@@ -36,7 +39,7 @@ const AddInvoiceImage = ({
       }
       setIsLoading(false);
     },
-    [setIsLoading]
+    [setIsDirty, setIsLoading]
   );
 
   return (
