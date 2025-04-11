@@ -56,20 +56,20 @@ export default function TableComponent<T>({
       </Table>
 
       {/* Scrollable Table Body */}
-      <div className="max-h-[500px] overflow-auto">
+      <div className="max-h-[80vh] overflow-auto">
         <Table className="w-full border-collapse">
-          <TableBody className="bg-white">
+          <TableBody>
             {table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="block sm:table-row border-b border-gray-200 rounded-lg md:border-1"
+                className="block sm:table-row border-b border-gray-200 rounded-lg md:border-1 bg-white my-10"
               >
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <TableCell
                       key={cell.id}
                       style={{ width: cell.column.getSize() }}
-                      className="block sm:table-cell px-3 py-2 before:block sm:before:hidden before:mb-1 min-w-[100%] sm:min-w-0"
+                      className="block sm:table-cell px-3 py-2  before:block sm:before:hidden before:mb-1 min-w-[100%] sm:min-w-0"
                     >
                       <>
                         <span className="font-semibold block sm:hidden border-b border-gray-200 mb-2 pb-2">
