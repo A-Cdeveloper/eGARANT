@@ -34,7 +34,7 @@ const AddInvoiceProducts = ({
 
       {/* PROIYVODI */}
 
-      <div className="hidden md:grid sm:grid-cols-[220px_80px_120px_100px_1fr] py-1 bg-primary/20 px-4 font-semibold">
+      <div className="hidden md:grid sm:grid-cols-[270px_80px_120px_100px_1fr] py-1 bg-primary/20 px-4 font-semibold">
         <div>Artikal</div>
         <div>Kol.</div>
         <div>Cena</div>

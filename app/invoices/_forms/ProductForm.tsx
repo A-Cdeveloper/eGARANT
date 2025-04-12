@@ -24,6 +24,7 @@ const ProductForm = ({
   const productQuantityRef = useRef<HTMLInputElement>(null);
   const productPeriodRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
 
   /////////////////////////////////////////////////////////////////////
 
@@ -48,6 +49,7 @@ const ProductForm = ({
       } as unknown as Product;
 
       setProducts((prevProducts) => [...prevProducts, newProduct]);
+      setSuccess(true);
 
       // Clear form
       productNameRef.current!.value = "";
@@ -55,6 +57,7 @@ const ProductForm = ({
       productQuantityRef.current!.value = "";
       productPeriodRef.current!.value = "";
       setShowNewProductForm(false);
+      setError("");
     }
 
     if (mode === "edit" && id) {
@@ -71,6 +74,8 @@ const ProductForm = ({
             : p
         )
       );
+      setSuccess(true);
+      setError("");
     }
   };
 
@@ -85,7 +90,7 @@ const ProductForm = ({
   return (
     <>
       <div
-        className={`grid grid-cols-1 md:grid-cols-[200px_60px_100px_80px_1fr_1fr] p-2 lg:p-4 items-center text-[14px] 
+        className={`grid grid-cols-1 md:grid-cols-[250px_60px_100px_80px_1fr] p-2 lg:p-4 items-center text-[14px] 
  space-y-[8px] sm:space-y-0 gap-5 ${
    !isEdit ? "bg-green-900/20" : ""
  } my-5 md:my-1`}
@@ -97,29 +102,55 @@ const ProductForm = ({
             ref={productNameRef}
             className="p-1"
             onChange={() => setIsDirty(true)}
+            onBlur={(e) => {
+              e.preventDefault();
+              if (isEdit && product?.productId) {
+                handleProduct("edit", product.productId);
+              } else {
+                handleProduct("add");
+              }
+            }}
             required
           />
         </div>
         <div className="flex gap-1 items-center">
           <Input
             type="number"
+            min={1}
             defaultValue={isEdit ? product?.quantity : ""}
             ref={productQuantityRef}
             className="p-1 md:placeholder:opacity-0"
             placeholder="Količina"
             onChange={() => setIsDirty(true)}
+            onBlur={(e) => {
+              e.preventDefault();
+              if (isEdit && product?.productId) {
+                handleProduct("edit", product.productId);
+              } else {
+                handleProduct("add");
+              }
+            }}
             required
           />
         </div>
 
         <div className="flex gap-1 items-center">
           <Input
+            min={1}
             type="number"
             defaultValue={isEdit ? product?.unit_price : ""}
             ref={productPriceRef}
             className="p-1 md:placeholder:opacity-0"
             placeholder="Cena"
             onChange={() => setIsDirty(true)}
+            onBlur={(e) => {
+              e.preventDefault();
+              if (isEdit && product?.productId) {
+                handleProduct("edit", product.productId);
+              } else {
+                handleProduct("add");
+              }
+            }}
             required
           />{" "}
           RSD
@@ -128,33 +159,27 @@ const ProductForm = ({
         <div>
           <div className="flex gap-1 items-center">
             <Input
+              min={1}
               type="number"
               defaultValue={isEdit ? product?.garantee : ""}
               className="w-full md:w-[60px] p-1 md:placeholder:opacity-0"
               ref={productPeriodRef}
               placeholder="Garancija"
               onChange={() => setIsDirty(true)}
+              onBlur={(e) => {
+                e.preventDefault();
+                if (isEdit && product?.productId) {
+                  handleProduct("edit", product.productId);
+                } else {
+                  handleProduct("add");
+                }
+              }}
               required
             />{" "}
             mes
           </div>
         </div>
-        <div className="flex gap-1 justify-end  bg-red-900/200">
-          <Button
-            size="sm"
-            variant="primary"
-            onClick={(e) => {
-              e.preventDefault();
-              if (isEdit && product?.productId) {
-                handleProduct("edit", product.productId);
-              } else {
-                handleProduct("add");
-              }
-            }}
-          >
-            {isEdit ? "Izmeni" : "Sačuvaj"}
-          </Button>
-
+        <div>
           <Button
             size="sm"
             variant="secondary"
@@ -168,7 +193,14 @@ const ProductForm = ({
           </Button>
         </div>
       </div>
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {error && <div className="text-red-600 text-sm text-center">{error}</div>}
+      {success && !error && (
+        <div className="text-green-600 text-sm text-center">
+          {mode === "add"
+            ? "Artikal uspješno dodan!"
+            : "Artikal uspješno ažuriran!"}
+        </div>
+      )}
     </>
   );
 };
