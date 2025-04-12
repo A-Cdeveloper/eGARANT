@@ -15,13 +15,13 @@ export function useOnlineStatus() {
         duration: 3000,
         icon: "🌎",
       });
-      console.log("Online");
+      // console.log("Online");
     } else {
       toast("Offline mode. Proverite internet konekciju.", {
         duration: 3000,
         icon: "🚫",
       });
-      console.log("Offline");
+      // console.log("Offline");
     }
   }, [isOnline]);
 
