@@ -4,7 +4,7 @@ import { MAX_UPLOAD_FILE_SIZE } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { parseError } from "@/lib/errors";
 import { getOptimizedImageURL, optimizeImage, pinata } from "@/pinata/config";
-import { InvoiceWithSeller } from "@/types";
+import { InvoiceWithProducts, InvoiceWithSeller } from "@/types";
 import { InvoiceFormSchema } from "@/zod/invoiceShemas";
 import { Invoice, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -12,11 +12,14 @@ import { revalidatePath } from "next/cache";
 //const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getAllUserInvoices = async (
-  uid: string
+  uid: string,
+  filter: string | undefined,
+  sort: string
 ): Promise<
   | { data: InvoiceWithSeller[]; error: null }
   | { data: null; error: string | string[] }
 > => {
+  const [field, order] = sort.split("-") as [string, "asc" | "desc"];
   try {
     const invoices = await prisma.invoice.findMany({
       where: {
@@ -36,11 +39,19 @@ export const getAllUserInvoices = async (
         },
       },
       orderBy: {
-        invoice_date: "desc",
+        [field]: order,
       },
     });
 
-    return { data: invoices, error: null };
+    const filteredInvoices = filter
+      ? (invoices as InvoiceWithProducts[]).filter((invoice) =>
+          invoice.products.some((product) =>
+            product.name.toLowerCase().includes(filter.toLowerCase())
+          )
+        )
+      : invoices;
+
+    return { data: filteredInvoices, error: null };
   } catch (error) {
     return { data: null, error: parseError(error) };
   }

@@ -21,3 +21,7 @@ export type InvoiceWithSeller = Prisma.InvoiceGetPayload<{
     };
   };
 }>;
+
+export type InvoiceWithProducts = InvoiceWithSeller & {
+  products: Product[];
+};

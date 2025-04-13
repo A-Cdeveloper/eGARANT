@@ -4,7 +4,7 @@ import empty from "@/public/empty.svg";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-const NoInvoicesFound = () => {
+const NoInvoices = ({ filter }: { filter: string }) => {
   const router = useRouter();
   return (
     <div className="w-full h-[40vh] flex flex-col justify-center items-center text-center bg-white">
@@ -15,16 +15,22 @@ const NoInvoicesFound = () => {
         height={80}
         className="mx-auto"
       />
-      <h2 className="my-5 text-[20px]">Nemate sačuvane račune.</h2>
-      <Button
-        size="lg"
-        variant="primary"
-        onClick={() => router.push("/invoices/add-new")}
-      >
-        Dodaj svoj prvi račun
-      </Button>
+      <h2 className="my-5 text-[20px]">
+        {filter
+          ? "Nema pronađenih računa po ovom kriterjumu."
+          : "Nemate sačuvane račune."}
+      </h2>
+      {!filter && (
+        <Button
+          size="lg"
+          variant="primary"
+          onClick={() => router.push("/invoices/add-new")}
+        >
+          Dodaj svoj prvi račun
+        </Button>
+      )}
     </div>
   );
 };
 
-export default NoInvoicesFound;
+export default NoInvoices;
