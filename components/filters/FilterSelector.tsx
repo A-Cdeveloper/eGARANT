@@ -30,8 +30,8 @@ const FilterSelector = () => {
           Datum opadajuci(default)
         </SelectItem>
         <SelectItem value="invoice_date-asc">Datum rastuci</SelectItem>
-        {/* <SelectItem value="amount-asc">Cena rastuci</SelectItem>
-        <SelectItem value="amount-desc">Cena opadajuci</SelectItem> */}
+        <SelectItem value="total-asc">Cena rastuci</SelectItem>
+        <SelectItem value="total-desc">Cena opadajuci</SelectItem>
       </SelectContent>
     </Select>
   );

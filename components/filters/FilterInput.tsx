@@ -24,7 +24,7 @@ const FilterInput = () => {
   return (
     <Input
       type="search"
-      placeholder="Pretraga računa..."
+      placeholder="Pretraga računa po artiklu..."
       className="bg-white"
       value={query}
       onChange={(e) => setQuery(e.target.value)}

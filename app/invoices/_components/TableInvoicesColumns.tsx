@@ -1,16 +1,16 @@
 "use client";
 import {
+  calculateInvoiceTotal,
   formatDate,
   formatPrice,
   getJsonArrayLength,
-  reduceJsonArray,
 } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 
 import TableActions from "@/components/table/TableActions";
 import Link from "next/link";
 
-import { InvoiceWithSeller, Product } from "@/types";
+import { InvoiceWithSeller } from "@/types";
 
 export const TableInvoicesColumns: ColumnDef<InvoiceWithSeller>[] = [
   {
@@ -63,12 +63,7 @@ export const TableInvoicesColumns: ColumnDef<InvoiceWithSeller>[] = [
     accessorKey: "total",
     header: "Iznos",
     cell: ({ row }) => {
-      const total = reduceJsonArray<Product>(
-        row.original?.products,
-        (acc, p) => acc + p.unit_price * p.quantity
-      );
-
-      return <span>{formatPrice(total)}</span>;
+      return formatPrice(calculateInvoiceTotal(row.original?.products));
     },
   },
   {

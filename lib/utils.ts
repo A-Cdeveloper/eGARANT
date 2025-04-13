@@ -55,3 +55,15 @@ export function mapJsonArray<T, R>(
 ): R[] {
   return Array.isArray(value) ? value.map(callback) : [];
 }
+
+//////////////////////////////////////////
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function calculateInvoiceTotal(products: any): number {
+  if (!Array.isArray(products)) return 0;
+  return products.reduce((acc, p) => {
+    if (p && typeof p === "object" && "unit_price" in p && "quantity" in p) {
+      return acc + p.unit_price * p.quantity;
+    }
+    return acc;
+  }, 0);
+}

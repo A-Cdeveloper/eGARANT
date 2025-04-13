@@ -3,6 +3,7 @@
 import { MAX_UPLOAD_FILE_SIZE } from "@/lib/constants";
 import prisma from "@/lib/db";
 import { parseError } from "@/lib/errors";
+import { calculateInvoiceTotal } from "@/lib/utils";
 import { getOptimizedImageURL, optimizeImage, pinata } from "@/pinata/config";
 import { InvoiceWithProducts, InvoiceWithSeller } from "@/types";
 import { InvoiceFormSchema } from "@/zod/invoiceShemas";
@@ -20,6 +21,8 @@ export const getAllUserInvoices = async (
   | { data: null; error: string | string[] }
 > => {
   const [field, order] = sort.split("-") as [string, "asc" | "desc"];
+
+  console.log(field, order);
   try {
     const invoices = await prisma.invoice.findMany({
       where: {
@@ -38,9 +41,12 @@ export const getAllUserInvoices = async (
           },
         },
       },
-      orderBy: {
-        [field]: order,
-      },
+      orderBy:
+        field !== "total"
+          ? {
+              [field]: order,
+            }
+          : undefined,
     });
 
     const filteredInvoices = filter
@@ -51,7 +57,16 @@ export const getAllUserInvoices = async (
         )
       : invoices;
 
-    return { data: filteredInvoices, error: null };
+    const sortedInvoices =
+      field === "total"
+        ? [...filteredInvoices].sort((a, b) => {
+            const totalA = calculateInvoiceTotal(a.products);
+            const totalB = calculateInvoiceTotal(b.products);
+            return order === "asc" ? totalA - totalB : totalB - totalA;
+          })
+        : filteredInvoices;
+
+    return { data: sortedInvoices, error: null };
   } catch (error) {
     return { data: null, error: parseError(error) };
   }

@@ -27,7 +27,7 @@ const InvoicesPage = async ({
           </div>
         </div>
 
-        <Invoices filter={filter} sort={sort} />
+        <Invoices filter={filter} sort={sort || ""} />
       </Suspense>
     </>
   );
