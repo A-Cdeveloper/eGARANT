@@ -1,14 +1,5 @@
 import { z } from "zod";
-
-export const emailSchema = z
-  .string()
-  .refine((value) => value.trim() !== "", {
-    message: "Email ne može biti prazan.",
-  })
-  .refine((value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
-    message: "Email nije validan.",
-  })
-  .transform((val) => val.trim());
+import { emailSchema } from "./authShemas";
 
 export const SellerFormSchema = z.object({
   name: z

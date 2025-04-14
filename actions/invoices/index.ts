@@ -22,7 +22,6 @@ export const getAllUserInvoices = async (
 > => {
   const [field, order] = sort.split("-") as [string, "asc" | "desc"];
 
-  console.log(field, order);
   try {
     const invoices = await prisma.invoice.findMany({
       where: {
