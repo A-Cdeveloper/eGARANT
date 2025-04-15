@@ -126,6 +126,17 @@ export const registerUser = async (
     },
   });
 
+  if (!existingUser?.isVerified) {
+    return {
+      data: {
+        firstname: visitor.firstname,
+        lastname: visitor.lastname,
+        email: visitor.email,
+      },
+      error: ["Korisnik sa ovom email adresom postoji, ali nije verifikovan."],
+    };
+  }
+
   if (existingUser) {
     return {
       data: {
@@ -150,7 +161,6 @@ export const registerUser = async (
         createdAt: new Date(),
         passwordHash: hashedPassword,
         verificationToken,
-        status: "ACTIVE",
       },
     });
 
@@ -170,4 +180,54 @@ export const registerUser = async (
       error: parseError(error),
     };
   }
+};
+
+// export const logoutUser = async () => {}
+
+export const userVerification = async (
+  verificationToken: string
+): Promise<{
+  title: string;
+  message?: string;
+  status: boolean;
+  userEmail?: string;
+}> => {
+  if (!verificationToken) {
+    return {
+      status: false,
+      title: "Verifikacioni token ne postoji.",
+    };
+  }
+
+  const user = await prisma.user.findFirst({
+    where: {
+      verificationToken,
+    },
+  });
+
+  if (!user) {
+    return {
+      status: false,
+      title: "Verifikacioni token nije validan.",
+      message: `Korisnik sa ovim verifikacionim tokenom ne postoji.
+      Molimo proverite vašu e-mail adresu i pokušajte ponovo.`,
+    };
+  }
+
+  await prisma.user.update({
+    where: {
+      uid: user.uid,
+    },
+    data: {
+      isVerified: true,
+      verificationToken: null,
+    },
+  });
+
+  return {
+    status: true,
+    title: "Verifikacioni token je validan.",
+    message: `Uspešno ste se aktivirali nalog.`,
+    userEmail: user.email,
+  };
 };

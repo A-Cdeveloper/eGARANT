@@ -22,7 +22,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (state.error === null && state.data) {
-      router.push("/");
+      router.push("/info");
     }
   }, [router, state.data, state.error]);
 
@@ -96,7 +96,7 @@ const RegisterForm = () => {
             )}
           </div>
 
-          <Button className="w-full">Registruj</Button>
+          <Button className="w-full">Registruj nalog</Button>
         </CardContent>
       </form>
     </Card>
