@@ -22,7 +22,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (state.error === null && state.data) {
-      router.push("/info");
+      router.push("/confirm/info");
     }
   }, [router, state.data, state.error]);
 

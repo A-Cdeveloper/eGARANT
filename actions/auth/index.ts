@@ -2,6 +2,7 @@
 
 import { createJWT, decodeJWT, hashPassword, verifyPassword } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { sendVerificationEmail } from "@/lib/emails/sendEmail";
 import { parseError } from "@/lib/errors";
 import { loginFormSchema, registerFormSchema } from "@/zod/authShemas";
 import { User } from "@prisma/client";
@@ -127,7 +128,7 @@ export const registerUser = async (
     },
   });
 
-  if (!existingUser?.isVerified) {
+  if (existingUser && !existingUser?.isVerified) {
     return {
       data: {
         firstname: visitor.firstname,
@@ -165,12 +166,16 @@ export const registerUser = async (
       },
     });
 
+    await sendVerificationEmail(visitor.email as string, verificationToken);
+
     return {
-      data: null,
+      data: {
+        firstname: visitor.firstname,
+        lastname: visitor.lastname,
+        email: visitor.email,
+      },
       error: null,
     };
-
-    // await sendAdminWelcomeEmail(data.email as string, verificationToken);
   } catch (error) {
     return {
       data: {
