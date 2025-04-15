@@ -10,7 +10,7 @@ const BurgerButton = () => {
 
   const { refEl } = useOutsideClick(() => setIsOpen(false));
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-2 items-center relative">
       <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         <Image
           src={isOpen ? "/close.svg" : "/burger.svg"}

@@ -35,7 +35,7 @@ export default function TableComponent<T>({
       {/* Table with Fixed Header */}
       <Table className="w-full border-collapse">
         {/* Sticky Header */}
-        <TableHeader className="hidden sm:table-header-group bg-primary sticky top-0 z-10">
+        <TableHeader className="hidden sm:table-header-group bg-primary sticky top-0 -z-1">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="hover:bg-primary">
               {headerGroup.headers.map((header) => (

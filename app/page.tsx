@@ -1,4 +1,10 @@
-export default function Home() {
+import { getUserFromCookies } from "@/actions/auth";
+
+export default async function Home() {
+  const user = await getUserFromCookies();
+
+  console.log(user);
+
   return (
     <>
       <h2>Dobrodosli Aleksandar Cvetkovic</h2>

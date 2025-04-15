@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-const useOutsideClick = (fn: () => void, listenCapturing = true) => {
+const useOutsideClick = (fn: () => void, listenCapturing = false) => {
   const refEl = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

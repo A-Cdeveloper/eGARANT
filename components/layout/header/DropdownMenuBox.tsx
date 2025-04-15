@@ -10,7 +10,7 @@ const DropdownMenuBox = ({
 }) => {
   return (
     <div
-      className={`absolute right-0 top-[60px] mt-0 w-60 bg-white shadow-lg  p-4 z-[10000000000] transition-all duration-200 ${
+      className={`absolute right-0 top-[60px] mt-0 w-60 bg-white shadow-lg  p-4 z-[100]! transition-all duration-200 ${
         isOpen
           ? "opacity-100 scale-100"
           : "opacity-0 scale-100 pointer-events-none"

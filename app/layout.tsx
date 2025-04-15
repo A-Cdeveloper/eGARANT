@@ -27,15 +27,14 @@ export default function RootLayout({
   return (
     <html lang="rs">
       <body className={`${roboto.className} antialiased`}>
-        <InternetStatus />
         <Header />
-
         <main className="flex-1 p-5 pt-[120px] w-full max-w-lg mx-auto flex flex-col justify-start">
           {children}
         </main>
-        <Toaster />
 
         <Footer />
+        <Toaster />
+        <InternetStatus />
       </body>
     </html>
   );
