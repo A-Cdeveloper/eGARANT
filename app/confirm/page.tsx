@@ -12,7 +12,7 @@ const ConfirmPage = async ({
   );
 
   return (
-    <div className="bg-white p-3 border border-gray-200 text-[15px] text-center">
+    <div className="bg-white p-8 border border-gray-200 text-[15px] text-center">
       <h2 className="text-center">{title}</h2>
       {message && (
         <>

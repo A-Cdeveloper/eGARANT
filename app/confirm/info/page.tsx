@@ -2,7 +2,7 @@ import React from "react";
 
 const ConfirmInfoPage = () => {
   return (
-    <div className="bg-white p-3 border border-gray-200 text-[15px] text-center">
+    <div className="bg-white p-8 border border-gray-200 text-[15px] text-center">
       <h2 className="text-center">Vaš nalog je kreiran.</h2>
       <div>
         <p>
