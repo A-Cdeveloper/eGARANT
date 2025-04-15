@@ -10,6 +10,7 @@ import { cookies } from "next/headers";
 
 type UserResponseType = Pick<User, "firstname" | "lastname" | "email">;
 
+//const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const loginUser = async (
   prevFormData: unknown,
   formData: FormData
