@@ -183,7 +183,14 @@ export const registerUser = async (
   }
 };
 
-// export const logoutUser = async () => {}
+export const logoutUser = async () => {
+  try {
+    (await cookies()).delete("garantUser");
+    return { data: null, error: null };
+  } catch (error) {
+    return { data: null, error: parseError(error) };
+  }
+};
 
 export const userVerification = async (
   verificationToken: string

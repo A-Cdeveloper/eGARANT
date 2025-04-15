@@ -1,5 +1,7 @@
 import React from "react";
 import NavLink from "./NavLink";
+import { Button } from "@/components/ui/button";
+import { logoutUser } from "@/actions/auth";
 
 const MainMenu = () => {
   return (
@@ -7,7 +9,15 @@ const MainMenu = () => {
       <NavLink href="/">Početna</NavLink>
       <NavLink href="/invoices">Moji računi</NavLink>
       <NavLink href="/profile">Moj nalog</NavLink>
-      <NavLink href="/logout">Odjava</NavLink>
+      <Button
+        size={"sm"}
+        className="cursor-pointer self-end mt-3"
+        onClick={async () => {
+          await logoutUser();
+        }}
+      >
+        Odjava
+      </Button>
     </ul>
   );
 };
