@@ -1,6 +1,6 @@
 "use client";
 import { registerUser } from "@/actions/auth";
-import FormErrorMessages from "@/app/invoices/_forms/FormErrorMessages";
+import FormErrorMessages from "@/app/(protected)/invoices/_forms/FormErrorMessages";
 import SubmitButton from "@/components/buttons/SubmitButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
