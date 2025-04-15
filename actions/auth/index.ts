@@ -1,6 +1,6 @@
 "use server";
 
-import { createJWT, hashPassword, verifyPassword } from "@/lib/auth";
+import { createJWT, decodeJWT, hashPassword, verifyPassword } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { parseError } from "@/lib/errors";
 import { loginFormSchema, registerFormSchema } from "@/zod/authShemas";
@@ -238,4 +238,50 @@ export const userVerification = async (
     message: `Uspešno ste se aktivirali nalog.`,
     userEmail: user.email,
   };
+};
+
+export const getUserFromCookies = async (): Promise<{
+  data: UserResponseType | null;
+  error: string | string[] | null;
+  tokenExpiry: number | null;
+}> => {
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("garantUser")?.value;
+
+  if (!cookie) {
+    return { data: null, error: null, tokenExpiry: null };
+  }
+
+  try {
+    const { userId, tokenExpiry } = await decodeJWT(cookie);
+    const expiry = typeof tokenExpiry === "number" ? tokenExpiry : null;
+
+    // Fetch user data from the database
+    const user = await prisma.user.findUnique({
+      where: {
+        uid: userId,
+      },
+      select: {
+        firstname: true,
+        lastname: true,
+        email: true,
+      },
+    });
+
+    if (!user) {
+      return { data: null, error: "Korisnik ne postoji.", tokenExpiry: null };
+    }
+
+    return {
+      data: {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+      },
+      tokenExpiry: expiry,
+      error: null,
+    };
+  } catch (error) {
+    return { data: null, error: parseError(error), tokenExpiry: null };
+  }
 };
