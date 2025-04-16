@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "moccasin-obedient-guanaco-455.mypinata.cloud",
+        hostname: "gold-solid-chameleon-765.mypinata.cloud",
       },
     ],
   },

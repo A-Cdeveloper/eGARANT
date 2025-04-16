@@ -8,22 +8,6 @@ export const pinata = new PinataSDK({
   pinataGateway: `${process.env.NEXT_PUBLIC_GATEWAY_URL}`,
 });
 
-// export async function getOptimizedImageURL(cid: string) {
-//   try {
-//     const signedUrl = await pinata.gateways.public.get(cid).optimizeImage({
-//       width: 800,
-//       height: 600,
-//       fit: "contain",
-//       format: "webp",
-//       quality: 90,
-//     });
-//     return signedUrl;
-//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   } catch (error) {
-//     return null;
-//   }
-// }
-
 export async function getOptimizedImageURL(cid: string) {
   try {
     const signedUrl = await pinata.gateways.private
