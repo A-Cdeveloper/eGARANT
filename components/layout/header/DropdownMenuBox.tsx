@@ -12,8 +12,6 @@ const DropdownMenuBox = ({
 }) => {
   const { user } = useAuthStore();
 
-  console.log(user);
-
   return (
     <div
       className={`absolute right-0 top-[60px] mt-0 w-60 bg-white shadow-lg  p-4 z-[100]! transition-all duration-200 ${
