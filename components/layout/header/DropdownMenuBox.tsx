@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import MainMenu from "./MainMenu";
+import { useAuthStore } from "@/store";
+import { createInitials } from "@/lib/utils";
 const DropdownMenuBox = ({
   isOpen,
   refEl,
@@ -8,6 +10,10 @@ const DropdownMenuBox = ({
   isOpen: boolean;
   refEl: React.RefObject<HTMLDivElement>;
 }) => {
+  const { user } = useAuthStore();
+
+  console.log(user);
+
   return (
     <div
       className={`absolute right-0 top-[60px] mt-0 w-60 bg-white shadow-lg  p-4 z-[100]! transition-all duration-200 ${
@@ -21,12 +27,16 @@ const DropdownMenuBox = ({
         ref={refEl}
       >
         <Avatar>
-          <AvatarFallback>AC</AvatarFallback>
+          <AvatarFallback>
+            {user && createInitials(user?.firstname, user?.lastname)}
+          </AvatarFallback>
         </Avatar>{" "}
         <div className="text-[12px] leading-[14px]">
-          <strong>Aleksandar Cvetkovic</strong>
+          <strong>
+            {user?.firstname} {user?.lastname}
+          </strong>
           <br />
-          aleksandar@e-seo.info
+          {user?.email}
         </div>
       </div>
       <MainMenu />

@@ -67,3 +67,12 @@ export function calculateInvoiceTotal(products: any): number {
     return acc;
   }, 0);
 }
+
+/////////////////////////////////////////////
+
+export const createInitials = (firstname: string, lastname: string) => {
+  if (!firstname || !lastname) {
+    return "NN";
+  }
+  return `${firstname.at(0)} ${lastname.at(0)}`;
+};
