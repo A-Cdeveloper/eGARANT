@@ -10,12 +10,13 @@ import InvoiceHead from "../_components/InvoiceHead";
 import InvoiceProductsList from "../_components/InvoiceProductsList";
 import InvoiceImage from "../_components/InvoiceImage";
 import InvoiceButtons from "../_components/InvoiceButtons";
+import { authSecurityPatch } from "@/lib/authSecurityPatch";
 
 type Params = Promise<{ iid: string }>;
 
 const InvoicePage = async ({ params }: { params: Params }) => {
   const { iid } = await params;
-
+  await authSecurityPatch();
   return (
     <>
       <BackButton to="/invoices" />

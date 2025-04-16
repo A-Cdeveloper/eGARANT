@@ -7,12 +7,14 @@ import { Suspense } from "react";
 import NoInvoices from "./_components/NoInvoices";
 import { TableInvoicesColumns } from "./_components/TableInvoicesColumns";
 import FilterSelector from "@/components/filters/FilterSelector";
+import { authSecurityPatch } from "@/lib/authSecurityPatch";
 
 const InvoicesPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
+  await authSecurityPatch();
   const { filter, sort } = await searchParams;
   return (
     <>
