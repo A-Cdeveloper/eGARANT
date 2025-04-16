@@ -1,13 +1,9 @@
-import { getAllUserInvoices } from "@/actions/invoices";
-import { ErrorMessage } from "@/components/errors/ErrorMessage";
 import FilterInput from "@/components/filters/FilterInput";
-import TableSkeleton from "@/components/skeletons/TableSkeleton";
-import TableComponent from "@/components/table/TableComponent";
-import { Suspense } from "react";
-import NoInvoices from "./_components/NoInvoices";
-import { TableInvoicesColumns } from "./_components/TableInvoicesColumns";
 import FilterSelector from "@/components/filters/FilterSelector";
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import { authSecurityPatch } from "@/lib/authSecurityPatch";
+import { Suspense } from "react";
+import { Invoices } from "./_components/Invoices";
 
 const InvoicesPage = async ({
   searchParams,
@@ -36,30 +32,3 @@ const InvoicesPage = async ({
 };
 
 export default InvoicesPage;
-
-//////////////////////////////////////////////////////////////////////
-export const Invoices = async ({
-  filter,
-  sort,
-}: {
-  filter: string | undefined;
-  sort: string;
-}) => {
-  const { data: invoices, error } = await getAllUserInvoices("1", filter, sort);
-
-  if (invoices && invoices.length === 0) {
-    return <NoInvoices filter={filter || ""} />;
-  }
-
-  if (error) {
-    return (
-      <>
-        <ErrorMessage error={error} />
-      </>
-    );
-  }
-
-  return (
-    <TableComponent columns={TableInvoicesColumns} data={invoices || []} />
-  );
-};
