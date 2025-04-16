@@ -16,7 +16,8 @@ import { User } from "@prisma/client";
 import { randomBytes } from "crypto";
 import { cookies } from "next/headers";
 
-type UserResponseType = Pick<User, "firstname" | "lastname" | "email">;
+export type UserResponseType = Pick<User, "firstname" | "lastname" | "email">;
+export type UserResponseTypeWithId = UserResponseType & { uid: string };
 
 //const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const loginUser = async (
@@ -305,7 +306,7 @@ export const forgotPassword = async (
 };
 
 export const getUserFromCookies = async (): Promise<{
-  data: UserResponseType | null;
+  data: UserResponseTypeWithId | null;
   error: string | string[] | null;
   tokenExpiry: number | null;
 }> => {
@@ -326,6 +327,7 @@ export const getUserFromCookies = async (): Promise<{
         uid: userId,
       },
       select: {
+        uid: true,
         firstname: true,
         lastname: true,
         email: true,
@@ -338,6 +340,7 @@ export const getUserFromCookies = async (): Promise<{
 
     return {
       data: {
+        uid: user.uid,
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
