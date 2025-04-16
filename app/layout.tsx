@@ -5,6 +5,7 @@ import Header from "@/components/layout/header/Header";
 import Footer from "@/components/layout/footer/Footer";
 import InternetStatus from "@/components/layout/InternetStatus";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const roboto = Roboto({
   variable: "--roboto",
@@ -26,14 +27,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="rs">
+      <InternetStatus />
       <body className={`${roboto.className} antialiased`}>
-        <InternetStatus />
-        <Header />
-        <main className="flex-1 p-5 pt-[120px] w-full max-w-lg mx-auto flex flex-col justify-start">
-          {children}
-        </main>
+        <AuthProvider>
+          <Header />
+          <main className="flex-1 p-5 pt-[120px] w-full max-w-lg mx-auto flex flex-col justify-start">
+            {children}
+          </main>
 
-        <Footer />
+          <Footer />
+        </AuthProvider>
         <Toaster />
       </body>
     </html>
