@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DatePicker } from "./DatePicker";
+import { DatePickerCalendar } from "./DatePicker";
 import { Input } from "../ui/input";
 
 export function DatePickerWrapper({
@@ -17,13 +17,12 @@ export function DatePickerWrapper({
 
   return (
     <>
-      <Input
-        type="hidden"
-        name="date"
-        value={selected?.toISOString() ?? ""}
-        onChange={() => setIsDirty(true)}
+      <Input type="hidden" name="date" value={selected?.toISOString() ?? ""} />
+      <DatePickerCalendar
+        value={selected}
+        onChange={setSelected}
+        setIsDirty={setIsDirty}
       />
-      <DatePicker value={selected} onChange={setSelected} />
     </>
   );
 }
