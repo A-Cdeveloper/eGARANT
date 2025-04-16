@@ -2,9 +2,16 @@
 
 import { createJWT, decodeJWT, hashPassword, verifyPassword } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { sendVerificationEmail } from "@/lib/emails/sendEmail";
+import {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+} from "@/lib/emails/sendEmail";
 import { parseError } from "@/lib/errors";
-import { loginFormSchema, registerFormSchema } from "@/zod/authShemas";
+import {
+  emailSchema,
+  loginFormSchema,
+  registerFormSchema,
+} from "@/zod/authShemas";
 import { User } from "@prisma/client";
 import { randomBytes } from "crypto";
 import { cookies } from "next/headers";
@@ -243,6 +250,58 @@ export const userVerification = async (
     message: `Uspešno ste se aktivirali nalog.`,
     userEmail: user.email,
   };
+};
+
+export const forgotPassword = async (
+  prevFormData: unknown,
+  formData: FormData
+): Promise<{
+  data: UserResponseType | null;
+  error: string | string[] | null;
+}> => {
+  const email = formData.get("email") as string;
+
+  const parsed = emailSchema.safeParse(email);
+
+  if (!parsed.success) {
+    return {
+      data: null,
+      error: parseError(parsed.error),
+    };
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    return { data: user, error: ["Korisnik ne postoji."] };
+  }
+
+  if (!user.isVerified) {
+    return { data: user, error: ["Korisnik nije verifikovan."] };
+  }
+
+  try {
+    const generatedPasword = randomBytes(10).toString("hex");
+    await prisma.user.update({
+      where: {
+        uid: user.uid,
+      },
+      data: {
+        passwordHash: await hashPassword(generatedPasword),
+        updatedAt: new Date(),
+      },
+    });
+
+    await sendPasswordResetEmail(email, generatedPasword);
+
+    return { data: user, error: null };
+  } catch (error) {
+    return { data: null, error: parseError(error) };
+  }
 };
 
 export const getUserFromCookies = async (): Promise<{
