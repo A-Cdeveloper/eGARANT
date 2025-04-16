@@ -1,5 +1,18 @@
 import Link from "next/link";
 import LoginForm from "./_components/LoginForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "eGarant",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 const LoginPage = () => {
   return (

@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import BackButton from "@/components/buttons/BackButton";
 import React from "react";
 import EditInvoiceForm from "../../_forms/EditInvoiceForm";
@@ -6,6 +7,18 @@ import { InvoiceWithSeller } from "@/types";
 import { authSecurityPatch } from "@/lib/authSecurityPatch";
 import { getUserFromCookies } from "@/actions/auth";
 import { RestrictAccessMessage } from "@/components/errors/RestrictAccessMessage";
+
+export const metadata: Metadata = {
+  title: "eGarant | Uredi račun",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 type Params = Promise<{ iid: string }>;
 

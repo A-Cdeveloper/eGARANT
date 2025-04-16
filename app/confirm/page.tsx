@@ -1,6 +1,20 @@
 import { userVerification } from "@/actions/auth";
 import Link from "next/link";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "eGarant",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
+
 const ConfirmPage = async ({
   searchParams,
 }: {

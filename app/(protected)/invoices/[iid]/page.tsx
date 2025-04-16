@@ -5,6 +5,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { authSecurityPatch } from "@/lib/authSecurityPatch";
 import { Suspense } from "react";
 import { SingleInvoice } from "../_components/SingleInvoice";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "eGarant | Detalji računa",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 type Params = Promise<{ iid: string }>;
 

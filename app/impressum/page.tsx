@@ -1,4 +1,18 @@
-import React from "react";
+// app/kontakt/page.tsx
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Impressum  | eGarant",
+  description:
+    "Pravne informacije i podaci o aplikaciji eGarant i njenim vlasnicima.",
+  openGraph: {
+    title: "Kontakt | eGarant",
+    description:
+      "Zvanične informacije o vlasništvu, odgovornosti i pravima aplikacije eGarant.",
+    url: "https://e-garant.vercel.app/impressum",
+    siteName: "eGarant",
+  },
+};
 
 const ImpressumPage = () => {
   return (

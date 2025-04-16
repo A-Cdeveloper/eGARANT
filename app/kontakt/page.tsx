@@ -1,4 +1,16 @@
-import React from "react";
+// app/kontakt/page.tsx
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Kontakt | eGarant",
+  description: "Kontaktirajte nas u vezi sa eGarant aplikacijom.",
+  openGraph: {
+    title: "Kontakt | eGarant",
+    description: "Kontaktirajte nas putem emaila za podršku i informacije.",
+    url: "https://e-garant.vercel.app/kontakt",
+    siteName: "eGarant",
+  },
+};
 
 const KontaktPage = () => {
   return (

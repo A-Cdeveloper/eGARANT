@@ -1,5 +1,17 @@
 import { authSecurityPatch } from "@/lib/authSecurityPatch";
-import React from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "eGarant | Profil",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 const ProfilPage = async () => {
   await authSecurityPatch();

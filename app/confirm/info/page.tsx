@@ -1,4 +1,16 @@
-import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "eGarant",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 const ConfirmInfoPage = () => {
   return (

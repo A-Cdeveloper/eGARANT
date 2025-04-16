@@ -15,9 +15,41 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "eGarant",
-  description:
-    "Aplikacija za digitalno skladištenje garancija kupljenih proizvoda.",
+  title:
+    "eGarant | Aplikacija za digitalno skladištenje garancija kupljenih proizvoda.",
+  description: "Digitalno skladištenje garancija za kupljene proizvode.",
+  applicationName: "eGarant",
+  keywords: [
+    "garancije",
+    "digitalno skladištenje",
+    "računi",
+    "proizvodi",
+    "eGarant",
+  ],
+  authors: [{ name: "E-SEO TEAM", url: "https://www.e-seo.info" }],
+  creator: "E-SEO TEAM",
+  metadataBase: new URL("https://e-garant.vercel.app"), // Replace with your domain
+  openGraph: {
+    title: "eGarant",
+    description: "Digitalno skladištenje garancija za kupljene proizvode.",
+    url: "https://e-garant.vercel.app",
+    siteName: "eGarant",
+    locale: "sr_RS",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  themeColor: "#2b2d42", // your primary brand color
 };
 
 export default function RootLayout({

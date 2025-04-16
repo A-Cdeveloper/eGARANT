@@ -1,9 +1,22 @@
+import { Metadata } from "next";
 import FilterInput from "@/components/filters/FilterInput";
 import FilterSelector from "@/components/filters/FilterSelector";
 import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import { authSecurityPatch } from "@/lib/authSecurityPatch";
 import { Suspense } from "react";
 import { Invoices } from "./_components/Invoices";
+
+export const metadata: Metadata = {
+  title: "eGarant | Moji računi",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 const InvoicesPage = async ({
   searchParams,
