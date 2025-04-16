@@ -6,6 +6,7 @@ import SubmitButton from "@/components/buttons/SubmitButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuthStore } from "@/store";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 
@@ -15,13 +16,15 @@ const LoginForm = () => {
     error: null,
   });
 
+  const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
 
   useEffect(() => {
+    setUser();
     if (state.error === null && state.data) {
-      router.push("/invoices/");
+      router.push("/");
     }
-  }, [router, state.data, state.error]);
+  }, [router, setUser, state.data, state.error]);
 
   return (
     <Card className="max-w-[375px] sm:w-[300px] mx-auto  bg-white rounded-none border border-gray-200 gap-3">
