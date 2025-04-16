@@ -1,10 +1,10 @@
-import { UserResponseType, getUserFromCookies } from "@/actions/auth";
+import { UserResponseTypeWithId, getUserFromCookies } from "@/actions/auth";
 
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 type AuthStoreType = {
-  user: UserResponseType | null;
+  user: UserResponseTypeWithId | null;
   tokenExpiry: number | null;
   isAuth: boolean;
   setUser: () => Promise<void>;
