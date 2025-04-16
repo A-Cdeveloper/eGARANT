@@ -16,16 +16,17 @@ const transporter = nodemailer.createTransport({
 
 export const sendEmail = async (
   email: string,
-  url: string,
   subject: string,
   message: string,
-  buttonText: string
+  buttonText: string,
+  url: string,
+  mode: string
 ) => {
   await transporter.sendMail({
     from: `eGarant <${process.env.EMAIL_USER}>`,
     to: email,
     subject,
-    html: emailHtml(url, message, buttonText),
+    html: emailHtml(url, message, buttonText, mode),
   });
 };
 
@@ -38,21 +39,25 @@ export const sendVerificationEmail = async (
   const verificationUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/confirm?verificationToken=${verificationToken}`;
   await sendEmail(
     email,
-    verificationUrl,
     "eGarant - Aktivacija naloga",
     "Potvrdite svoju adresu e-pošte klikom na dugme ispod:",
-    "Aktivirajte nalog"
+    "Aktivirajte nalog",
+    verificationUrl,
+    "verification"
   );
 };
 
-export const sendPasswordResetEmail = async (email: string, token: string) => {
-  const resetUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/reset-password?token=${token}`;
-
+export const sendPasswordResetEmail = async (
+  email: string,
+  generatedPasword: string
+) => {
+  const loginUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/login`;
   await sendEmail(
     email,
-    resetUrl,
-    "eGarant - Reset lozinke",
-    "Klinikite na dugme ispod da biste resetovali svoju lozinku:",
-    "Resetuj lozinku"
+    "eGarant - Nova privremena lozinke",
+    `Vaša privremena lozinka je: ${generatedPasword}`,
+    "Prijavite se",
+    loginUrl,
+    "resetPassword"
   );
 };

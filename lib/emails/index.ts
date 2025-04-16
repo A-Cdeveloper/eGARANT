@@ -3,7 +3,8 @@ const logo = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/egarant-email.png`;
 export const emailHtml = (
   url: string,
   emailText: string,
-  buttonText: string
+  buttonText: string,
+  mode: string
 ) => {
   return `
     <!DOCTYPE html>
@@ -58,12 +59,18 @@ export const emailHtml = (
       <body>
         <div class="email-container">
           <div class="header">
-            <a href="${process.env.NEXT_PUBLIC_FRONTEND_URL}"><img src="${logo}" alt="eGarant" /></a>
+            <a href="${
+              process.env.NEXT_PUBLIC_FRONTEND_URL
+            }"><img src="${logo}" alt="eGarant" /></a>
           </div>
           <div class="content">
             <p>${emailText}</p>
             <a href="${url}">${buttonText}</a>
-            <p class="note">Ako Vi niste otvorili ovaj nalog, možete da zanemarite ovu e-poruku.</p>
+            <p class="note">${
+              mode === "verification"
+                ? "Ako Vi niste otvorili ovaj nalog, možete da zanemarite ovu e-poruku."
+                : "Ukoliko vi niste zatrazili promenu lozinke, možete da zanemarite ovu e-poruku."
+            }</p>
           </div>
         </div>
       </body>
