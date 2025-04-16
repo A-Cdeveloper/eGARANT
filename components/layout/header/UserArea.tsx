@@ -26,7 +26,7 @@ const UserArea = () => {
             router.push("/login");
           }}
         >
-          Login
+          Prijavi se
         </Button>
       )}
     </div>
