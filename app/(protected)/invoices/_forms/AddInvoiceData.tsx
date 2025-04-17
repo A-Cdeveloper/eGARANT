@@ -22,6 +22,8 @@ import SubmitButton from "@/components/buttons/SubmitButton";
 import { useBeforeUnloadPrompt } from "@/hooks/useBeforeUnloadPrompt";
 import { useBlockNavigation } from "@/hooks/useBlockNavigation";
 import Modal from "@/components/modals/Modal";
+import { useAuthStore } from "@/store";
+import { Input } from "@/components/ui/input";
 
 const AddInvoiceData = ({
   sellers,
@@ -38,6 +40,8 @@ const AddInvoiceData = ({
   const [loadingImageUpload, setLoadingImageUpload] = useState<boolean>(false);
 
   const router = useRouter();
+
+  const currentUser = useAuthStore((state) => state.user);
 
   useBeforeUnloadPrompt(isDirty);
   const { showModal, cancelNavigation, confirmNavigation } =
@@ -66,6 +70,7 @@ const AddInvoiceData = ({
         </>
       )}
       <form action={action}>
+        <Input type="hidden" name="uid" value={currentUser?.uid} />
         <div className="flex flex-col gap-2">
           {sellers && sellers.length > 0 && (
             <>

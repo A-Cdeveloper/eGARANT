@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 type Params = Promise<{ iid: string }>;
 
 const InvoicePage = async ({ params }: { params: Params }) => {
-  await authSecurityPatch();
+  const { uid } = await authSecurityPatch();
   const { iid } = await params;
   return (
     <>
@@ -36,7 +36,7 @@ const InvoicePage = async ({ params }: { params: Params }) => {
           </>
         }
       >
-        <SingleInvoice id={iid} />
+        <SingleInvoice id={iid} uid={uid} />
       </Suspense>
     </>
   );

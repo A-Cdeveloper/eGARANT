@@ -119,7 +119,7 @@ export const addInvoice = async (
 }> => {
   const invoice = {
     sid: formData.get("sid") as string,
-    uid: "1",
+    uid: formData.get("uid") as string,
     invoice_date: formData.get("date")
       ? new Date(formData.get("date") as string)
       : undefined,
@@ -163,7 +163,6 @@ export const updateInvoice = async (
   const invoice = {
     iid: formData.get("iid") as string,
     sid: formData.get("sid") as string,
-    uid: "1",
     invoice_date: formData.get("date")
       ? new Date(formData.get("date") as string)
       : undefined,

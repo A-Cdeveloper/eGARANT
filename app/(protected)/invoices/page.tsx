@@ -23,7 +23,7 @@ const InvoicesPage = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
-  await authSecurityPatch();
+  const { uid } = await authSecurityPatch();
   const { filter, sort } = await searchParams;
   return (
     <>
@@ -38,7 +38,7 @@ const InvoicesPage = async ({
           </div>
         </div>
 
-        <Invoices filter={filter} sort={sort || ""} />
+        <Invoices filter={filter} sort={sort || ""} uid={uid as string} />
       </Suspense>
     </>
   );

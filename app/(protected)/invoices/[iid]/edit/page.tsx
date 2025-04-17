@@ -1,12 +1,10 @@
-import { Metadata } from "next";
-import BackButton from "@/components/buttons/BackButton";
-import React from "react";
-import EditInvoiceForm from "../../_forms/EditInvoiceForm";
 import { getUserInvoice } from "@/actions/invoices";
-import { InvoiceWithSeller } from "@/types";
-import { authSecurityPatch } from "@/lib/authSecurityPatch";
-import { getUserFromCookies } from "@/actions/auth";
+import BackButton from "@/components/buttons/BackButton";
 import { RestrictAccessMessage } from "@/components/errors/RestrictAccessMessage";
+import { authSecurityPatch } from "@/lib/authSecurityPatch";
+import { InvoiceWithSeller } from "@/types";
+import { Metadata } from "next";
+import EditInvoiceForm from "../../_forms/EditInvoiceForm";
 
 export const metadata: Metadata = {
   title: "eGarant | Uredi račun",
@@ -23,12 +21,11 @@ export const metadata: Metadata = {
 type Params = Promise<{ iid: string }>;
 
 const EditInvoicePage = async ({ params }: { params: Params }) => {
-  await authSecurityPatch();
-  const { data: user } = (await getUserFromCookies()) ?? null;
+  const { uid } = await authSecurityPatch();
   const { iid } = await params;
-  const { data: invoice } = await getUserInvoice(iid, user?.uid as string);
+  const { data: invoice } = await getUserInvoice(iid, uid as string);
 
-  if (user?.uid !== invoice?.uid) {
+  if (uid !== invoice?.uid) {
     return (
       <>
         <RestrictAccessMessage />

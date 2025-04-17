@@ -1,21 +1,22 @@
 import { getUserInvoice } from "@/actions/invoices";
 import { ErrorMessage } from "@/components/errors/ErrorMessage";
-import { InvoiceWithSeller } from "@/types";
-import InvoiceHead from "./InvoiceHead";
-import InvoiceProductsList from "./InvoiceProductsList";
-import InvoiceImage from "./InvoiceImage";
-import InvoiceButtons from "./InvoiceButtons";
-import { getUserFromCookies } from "@/actions/auth";
 import { RestrictAccessMessage } from "@/components/errors/RestrictAccessMessage";
+import { InvoiceWithSeller } from "@/types";
+import InvoiceButtons from "./InvoiceButtons";
+import InvoiceHead from "./InvoiceHead";
+import InvoiceImage from "./InvoiceImage";
+import InvoiceProductsList from "./InvoiceProductsList";
 
-export const SingleInvoice = async ({ id }: { id: string }) => {
-  const { data: user } = (await getUserFromCookies()) ?? null;
-  const { data: invoice, error } = await getUserInvoice(
-    id,
-    user?.uid as string
-  );
+export const SingleInvoice = async ({
+  id,
+  uid,
+}: {
+  id: string;
+  uid: string;
+}) => {
+  const { data: invoice, error } = await getUserInvoice(id, uid);
 
-  if (user?.uid !== invoice?.uid) {
+  if (uid !== invoice?.uid) {
     return (
       <>
         <RestrictAccessMessage />
