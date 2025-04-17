@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const FormSuccessMessage = () => {
+const FormSuccessMessage = ({ children }: { children: React.ReactNode }) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const FormSuccessMessage = () => {
     <>
       {visible && (
         <div className="bg-green-500 text-white text-[13px] p-2 mb-2">
-          Prodajno mesto uspešno dodato na listu.
+          {children}
         </div>
       )}
     </>
