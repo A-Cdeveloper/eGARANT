@@ -27,14 +27,11 @@ const AddInvoiceImage = ({
       const selectedFile = e.target.files?.[0];
       if (!selectedFile) return;
 
-      console.log(selectedFile);
-
       setIsLoading(true);
       setIsDirty(true);
 
       const resizedFile = await resizeImage(selectedFile, 600, 600); // max width & height
 
-      console.log(resizedFile);
       const { data, error } = await uploadInvoiceImage(resizedFile as File);
 
       if (data === null) {
