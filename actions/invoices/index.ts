@@ -189,6 +189,7 @@ export const addInvoice = async (
     revalidatePath("/invoices");
     return { data: newInvoice, error: null };
   } catch (error) {
+    console.log(error);
     return { data: null, error: parseError(error) };
   }
 };
