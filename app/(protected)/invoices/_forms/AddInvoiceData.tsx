@@ -43,6 +43,8 @@ const AddInvoiceData = ({
 
   const currentUser = useAuthStore((state) => state.user);
 
+  console.log(state.error);
+
   useBeforeUnloadPrompt(isDirty);
   const { showModal, cancelNavigation, confirmNavigation } =
     useBlockNavigation(isDirty);
