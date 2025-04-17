@@ -18,7 +18,9 @@ export default async function Home() {
         {currentUser.lastname},
       </h2>
       <div className="flex flex-wrap justify-center md:justify-between my-12 gap-3">
-        <InfoBox caption="Broj računa" value={count} style="secondary" />
+        <Link href="/invoices">
+          <InfoBox caption="Moji računi" value={count} style="secondary" />
+        </Link>
         <InfoBox caption="Broj artikala" value={totalProductCount} />
         <InfoBox
           caption="Ukupno RSD"
@@ -27,11 +29,19 @@ export default async function Home() {
           style="gray-400"
         />
       </div>
-      <div className="flex justify-center">
+      <div className="flex flex-wrap justify-center gap-4">
+        <Button
+          variant="primary_full"
+          size={"lg"}
+          className="text-[25px] p-6 w-[240px]"
+        >
+          <Link href="/profile">Moj nalog</Link>
+        </Button>
+
         <Button
           variant="secondary_full"
           size={"lg"}
-          className="text-[25px] p-6"
+          className="text-[25px] p-6 w-[240px]"
         >
           <Link href="/invoices/add-new">Dodaj novi račun</Link>
         </Button>
