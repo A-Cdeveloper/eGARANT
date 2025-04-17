@@ -16,7 +16,7 @@ const RegisterForm = () => {
   });
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const [errorPass, setErrorPass] = useState("");
+  const [passValid, setPassValid] = useState(false);
 
   const router = useRouter();
 
@@ -28,9 +28,9 @@ const RegisterForm = () => {
 
   const checkPasswordHandler = () => {
     if (passwordRef.current?.value !== confirmPasswordRef.current?.value) {
-      setErrorPass("Lozinke se ne podudaraju.");
+      setPassValid(false);
     } else {
-      setErrorPass("");
+      setPassValid(true);
     }
   };
 
@@ -91,12 +91,16 @@ const RegisterForm = () => {
               ref={confirmPasswordRef}
               onChange={checkPasswordHandler}
             />
-            {errorPass && (
-              <p className="text-red-500 text-[12px]">{errorPass}</p>
-            )}
+            {!passValid ? (
+              <p className="text-red-500 text-[12px]">
+                Lozinke se ne podudaraju
+              </p>
+            ) : null}
           </div>
 
-          <SubmitButton className="w-full mt-3">Registruj nalog</SubmitButton>
+          <SubmitButton className="w-full mt-3" disabled={!passValid}>
+            Registruj nalog
+          </SubmitButton>
         </CardContent>
       </form>
     </Card>
