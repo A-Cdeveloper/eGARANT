@@ -47,7 +47,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
   },
   themeColor: "#2b2d42", // your primary brand color
 };
