@@ -52,3 +52,7 @@ export const registerFormSchema = z.object({
   email: emailSchema,
   password: registerPasswordSchema,
 });
+
+export const editProfileFormSchema = registerFormSchema.omit({
+  password: true,
+});
