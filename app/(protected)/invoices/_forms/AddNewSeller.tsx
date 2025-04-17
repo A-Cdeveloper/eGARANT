@@ -24,7 +24,9 @@ const AddNewSeller = ({
     <>
       {state.error && <FormErrorMessages errors={state.error as string[]} />}
       {!state.error && state.data ? (
-        <FormSuccessMessage />
+        <FormSuccessMessage>
+          Prodajno mesto uspešno dodato na listu.
+        </FormSuccessMessage>
       ) : (
         <div className="border-y-2  bg-white border-secondary p-4 text-[15px]">
           <h3>Dodaj novo prodajno mesto:</h3>
