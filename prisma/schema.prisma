@@ -38,7 +38,7 @@ model Invoice {
   iid            String   @id @default(uuid()) @map("iid")
   invoice_number String
   invoice_date   DateTime @default(now())
-  invoice_image  String
+  invoice_image  String   @db.VarChar(400)
 
   uid  String
   user User   @relation(fields: [uid], references: [uid])
