@@ -14,20 +14,30 @@ import { revalidatePath } from "next/cache";
 
 export const getAllUserInvoices = async (
   uid: string,
-  filter: string | undefined,
-  sort: string
+  filter: string | undefined = "",
+  sort: string = "invoice_date-desc"
 ): Promise<
-  | { data: InvoiceWithSeller[]; error: null }
-  | { data: null; error: string | string[] }
+  | {
+      data: InvoiceWithSeller[];
+      count: number;
+      totalProductCount: number;
+      totalPrice: number;
+      error: null;
+    }
+  | {
+      data: null;
+      count: number;
+      totalProductCount: number;
+      totalPrice: number;
+      error: string | string[];
+    }
 > => {
   const [field, order] = sort.split("-") as [string, "asc" | "desc"];
 
   try {
     const invoices = await prisma.invoice.findMany({
       where: {
-        user: {
-          uid,
-        },
+        uid,
       },
       include: {
         seller: {
@@ -48,14 +58,33 @@ export const getAllUserInvoices = async (
           : undefined,
     });
 
+    const count = await prisma.invoice.count({
+      where: {
+        uid,
+      },
+    });
+
+    // Filter by product name if needed
     const filteredInvoices = filter
       ? (invoices as InvoiceWithProducts[]).filter((invoice) =>
           invoice.products.some((product) =>
             product.name.toLowerCase().includes(filter.toLowerCase())
           )
         )
-      : invoices;
+      : (invoices as InvoiceWithProducts[]);
 
+    // Total price & product count from all (filtered) invoices
+    let totalPrice = 0;
+    let totalProductCount = 0;
+
+    for (const invoice of filteredInvoices) {
+      for (const product of invoice.products) {
+        totalPrice += product.unit_price * product.quantity;
+        totalProductCount += product.quantity;
+      }
+    }
+
+    // Sort if "total" is selected
     const sortedInvoices =
       field === "total"
         ? [...filteredInvoices].sort((a, b) => {
@@ -65,9 +94,21 @@ export const getAllUserInvoices = async (
           })
         : filteredInvoices;
 
-    return { data: sortedInvoices, error: null };
+    return {
+      data: sortedInvoices,
+      count,
+      totalProductCount,
+      totalPrice,
+      error: null,
+    };
   } catch (error) {
-    return { data: null, error: parseError(error) };
+    return {
+      data: null,
+      count: 0,
+      totalProductCount: 0,
+      totalPrice: 0,
+      error: parseError(error),
+    };
   }
 };
 
