@@ -22,8 +22,8 @@ const LoginForm = () => {
   useEffect(() => {
     if (state.error === null && state.data) {
       router.push("/");
+      setUser();
     }
-    setUser();
   }, [router, setUser, state.data, state.error]);
 
   return (
