@@ -1,15 +1,15 @@
 // Critical Security Vulnerability 2015 // https://nextjs.org/blog/cve-2025-29927
 
-import { cookies } from "next/headers";
+import { getUserFromCookies } from "@/actions/auth";
+
 import { redirect } from "next/navigation";
 
 export async function authSecurityPatch() {
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("garantUser");
+  const { data: user } = await getUserFromCookies();
 
-  if (!token) {
+  if (!user) {
     redirect("/login");
   }
 
-  return token;
+  return user;
 }
