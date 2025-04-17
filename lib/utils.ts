@@ -76,3 +76,66 @@ export const createInitials = (firstname: string, lastname: string) => {
   }
   return `${firstname.at(0)} ${lastname.at(0)}`;
 };
+
+///////////////////////////////////////////////////////
+export const resizeImage = (
+  file: File,
+  maxWidth: number,
+  maxHeight: number
+): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      img.src = event.target?.result as string;
+    };
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+
+      let width = img.width;
+      let height = img.height;
+
+      // Calculate new size maintaining aspect ratio
+      if (width > height) {
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject("Failed to get canvas context");
+
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            const resizedFile = new File([blob], file.name, {
+              type: file.type,
+              lastModified: Date.now(),
+            });
+            resolve(resizedFile);
+          } else {
+            reject("Image resize failed");
+          }
+        },
+        file.type,
+        0.9 // quality
+      );
+    };
+
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
+};

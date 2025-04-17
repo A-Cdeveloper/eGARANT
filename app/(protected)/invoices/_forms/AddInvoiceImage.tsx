@@ -3,6 +3,7 @@ import { uploadInvoiceImage } from "@/actions/invoices";
 import MiniSpinner from "@/components/MiniSpinner";
 import CloseButton from "@/components/buttons/CloseButton";
 import { Input } from "@/components/ui/input";
+import { resizeImage } from "@/lib/utils";
 import Image from "next/image";
 
 import React, { useCallback, useState } from "react";
@@ -26,10 +27,15 @@ const AddInvoiceImage = ({
       const selectedFile = e.target.files?.[0];
       if (!selectedFile) return;
 
+      console.log(selectedFile);
+
       setIsLoading(true);
       setIsDirty(true);
 
-      const { data, error } = await uploadInvoiceImage(selectedFile as File);
+      const resizedFile = await resizeImage(selectedFile, 600, 600); // max width & height
+
+      console.log(resizedFile);
+      const { data, error } = await uploadInvoiceImage(resizedFile as File);
 
       if (data === null) {
         setError(error);
