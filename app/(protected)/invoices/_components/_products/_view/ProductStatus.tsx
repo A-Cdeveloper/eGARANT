@@ -14,7 +14,9 @@ const ProductStatus = ({ date, gperiod }: { date: Date; gperiod: number }) => {
   const daysUntilfinalDate = getNumDaysFromToday(date);
   const daysTotal = getDaysBetweenDates(finalDate, date);
 
-  const percentage = (daysUntilfinalDate * 100) / daysTotal;
+  let percentage = (daysUntilfinalDate * 100) / daysTotal;
+
+  if (getDaysBetweenDates(finalDate, new Date()) <= 0) percentage = 100;
 
   const progressBarColor =
     percentage < 50
@@ -25,7 +27,13 @@ const ProductStatus = ({ date, gperiod }: { date: Date; gperiod: number }) => {
 
   return (
     <div>
-      <p className="text-xs">važi do {formatDate(finalDate)}</p>
+      {percentage >= 100 ? (
+        <p className="text-xs">{`garancija je istekla ${formatDate(
+          finalDate
+        )}`}</p>
+      ) : (
+        <p className="text-xs">važi do {formatDate(finalDate)}</p>
+      )}
       <ProgressBar
         value={percentage}
         progressBarColor={progressBarColor}
