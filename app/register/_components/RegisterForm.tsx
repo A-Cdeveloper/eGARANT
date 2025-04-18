@@ -16,7 +16,7 @@ const RegisterForm = () => {
   });
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const [passValid, setPassValid] = useState(false);
+  const [passValid, setPassValid] = useState(true);
 
   const router = useRouter();
 
@@ -98,7 +98,10 @@ const RegisterForm = () => {
             ) : null}
           </div>
 
-          <SubmitButton className="w-full mt-3" disabled={!passValid}>
+          <SubmitButton
+            className="w-full mt-3"
+            disabled={!passValid || confirmPasswordRef.current?.value === ""}
+          >
             Registruj nalog
           </SubmitButton>
         </CardContent>

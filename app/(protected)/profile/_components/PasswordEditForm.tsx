@@ -74,7 +74,7 @@ const PasswordEditForm = ({ user }: { user: UserResponseTypeWithId }) => {
         <Button
           variant="secondary_full"
           className="ms-auto"
-          disabled={!passValid}
+          disabled={!passValid || confirmPasswordRef.current?.value === ""}
         >
           Izmeni lozinku
         </Button>{" "}
