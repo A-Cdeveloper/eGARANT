@@ -1,25 +1,29 @@
-# eGarant - Digital Warranty Keeper
+# 🛡️ eGarant - Digital Warranty Keeper
 
-A Next.js 15 application that helps users store and manage their product warranties digitally.
+eGarant is a Next.js 15 application that helps users store, organize, and manage their product warranties digitally.
 
-## Tech Stack
+---
 
-**Framework:** Next.js 15  
-**Database:** MySQL with Prisma ORM  
-**Authentication:** JWT with `jose`  
-**State Management:** Zustand  
-**Validation:** Zod  
-**Middleware:** JWT-based authentication  
-**Styling:** Tailwind CSS 4
+## 🚀 Tech Stack
 
-## Features
+- **Framework:** Next.js 15 (App Router, Server Components)
+- **Database:** MySQL with Prisma ORM
+- **Authentication:** JWT using [`jose`](https://github.com/panva/jose)
+- **State Management:** Zustand
+- **Validation:** Zod
+- **Middleware:** JWT-based authentication
+- **Styling:** Tailwind CSS 4
 
-- Secure user authentication with JWT
-- Client-side state management using Zustand
-- Store and manage product warranties digitally
-- Categorize warranties for easy access
-- Set expiration reminders for warranties
-- Responsive UI built with Tailwind CSS 4
+---
+
+## ✨ Features
+
+- 🔐 Secure login system using JWT
+- 📦 Add and manage product warranties (name, date, expiration, files)
+- 📱 Fully responsive UI with Tailwind CSS 4
+- 🧠 Client-side state management with Zustand
+- ✅ Form validation powered by Zod
+- 🔒 API route protection via middleware
 
 ## License
 
