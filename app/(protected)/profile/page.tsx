@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import ProfileEditForm from "./_components/ProfileEditForm";
 import { formatDate } from "@/lib/utils";
 import PasswordEditForm from "./_components/PasswordEditForm";
+import DeleteProfile from "./_components/DeleteProfile";
 
 export const metadata: Metadata = {
   title: "eGarant | Profil",
@@ -33,7 +34,8 @@ const ProfilPage = async () => {
       </div>
       <div className="flex flex-wrap justify-between gap-8">
         <ProfileEditForm user={user as UserResponseTypeProfile} />
-        <PasswordEditForm user={user as UserResponseTypeProfile} />
+        <PasswordEditForm userId={user?.uid as string} />
+        <DeleteProfile />
       </div>
     </div>
   );

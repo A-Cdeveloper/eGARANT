@@ -1,15 +1,15 @@
 "use client";
-import { UserResponseTypeWithId, logoutUser } from "@/actions/auth";
+import { logoutUser } from "@/actions/auth";
 import { changePassword } from "@/actions/profile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/store";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState } from "react";
 import FormErrorMessages from "../../invoices/_forms/FormErrorMessages";
 import FormSuccessMessage from "../../invoices/_forms/FormSuccessMessage";
-import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store";
 
-const PasswordEditForm = ({ user }: { user: UserResponseTypeWithId }) => {
+const PasswordEditForm = ({ userId }: { userId: string }) => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const [passValid, setPassValid] = useState(true);
@@ -55,7 +55,7 @@ const PasswordEditForm = ({ user }: { user: UserResponseTypeWithId }) => {
         </FormSuccessMessage>
       ) : null}
       <form action={action} className="space-y-2">
-        <Input type="hidden" name="uid" defaultValue={user.uid}></Input>
+        <Input type="hidden" name="uid" defaultValue={userId}></Input>
         <Input
           type="password"
           placeholder="Lozinka"
