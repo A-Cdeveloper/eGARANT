@@ -35,8 +35,8 @@ const ProfilPage = async () => {
       <div className="flex flex-wrap justify-between gap-8">
         <ProfileEditForm user={user as UserResponseTypeProfile} />
         <PasswordEditForm userId={user?.uid as string} />
-        <DeleteProfile />
       </div>
+      <DeleteProfile userId={user?.uid as string} />
     </div>
   );
 };

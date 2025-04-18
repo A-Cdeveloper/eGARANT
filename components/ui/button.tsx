@@ -21,7 +21,7 @@ const buttonVariants = cva(
         secondary_full:
           "bg-secondary text-white border-2 border-secondary hover:bg-transparent hover:text-secondary",
         danger_full:
-          "bg-red-500 text-white border-2 border-red-500 hover:transparent hover:text-red-500",
+          "bg-red-500 text-white border-2 border-red-500 hover:bg-transparent hover:text-red-500",
 
         ghost:
           "bg-transparent text-primary hover:text-secondary focus:text-secondary focus-visible:ring-0",

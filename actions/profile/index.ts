@@ -124,3 +124,21 @@ export const changePassword = async (
     return { error: parseError(error), success: false };
   }
 };
+
+export const deleteProfile = async (uid: string) => {
+  try {
+    await prisma.invoice.deleteMany({
+      where: {
+        uid,
+      },
+    });
+    await prisma.user.delete({
+      where: {
+        uid,
+      },
+    });
+  } catch (error) {
+    return { data: null, error: parseError(error) };
+  }
+  revalidatePath("/profile");
+};
