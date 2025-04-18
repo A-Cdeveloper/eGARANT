@@ -7,15 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/store";
+import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 const LoginForm = () => {
   const [state, action] = useActionState(loginUser, {
     data: null,
     error: null,
   });
-
+  const [isVisiblePass, setIsVisiblePass] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
 
@@ -53,11 +54,19 @@ const LoginForm = () => {
 
           <div className="space-y-2">
             <Label htmlFor="password">Lozinka</Label>
-            <Input
-              name="password"
-              type="password"
-              placeholder="Unesite lozinku"
-            />
+            <div className="relative">
+              <Input
+                type={isVisiblePass ? "text" : "password"}
+                placeholder="Unesite lozinku"
+                name="password"
+              />
+              <div
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                onClick={() => setIsVisiblePass(!isVisiblePass)}
+              >
+                {isVisiblePass ? <Eye width={16} /> : <EyeOff width={16} />}
+              </div>
+            </div>
           </div>
 
           <SubmitButton className="w-full mt-3">Uloguj se</SubmitButton>

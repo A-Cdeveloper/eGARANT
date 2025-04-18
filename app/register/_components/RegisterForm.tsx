@@ -5,6 +5,7 @@ import SubmitButton from "@/components/buttons/SubmitButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Eye, EyeOff } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState } from "react";
@@ -17,6 +18,8 @@ const RegisterForm = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const [passValid, setPassValid] = useState(true);
+  const [isVisiblePass, setIsVisiblePass] = useState(false);
+  const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
 
   const router = useRouter();
 
@@ -78,24 +81,35 @@ const RegisterForm = () => {
 
           <div className="space-y-2">
             <Label htmlFor="password">Lozinka*</Label>
+            <div className="relative">
+              <Input
+                type={isVisiblePass ? "text" : "password"}
+                placeholder="Lozinka"
+                name="password"
+                ref={passwordRef}
+              />
+              <div
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                onClick={() => setIsVisiblePass(!isVisiblePass)}
+              >
+                {isVisiblePass ? <Eye width={16} /> : <EyeOff width={16} />}
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
             <Input
-              name="password"
-              type="password"
-              placeholder="Unesite lozinku"
-              ref={passwordRef}
-            />
-            <Input
-              name="password_again"
-              type="password"
-              placeholder="Ponovite lozinku"
+              type={isVisibleConfirm ? "text" : "password"}
+              placeholder="Lozinka ponovo"
               ref={confirmPasswordRef}
               onChange={checkPasswordHandler}
             />
-            {!passValid ? (
-              <p className="text-red-500 text-[12px]">
-                Lozinke se ne podudaraju
-              </p>
-            ) : null}
+            <div
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+              onClick={() => setIsVisibleConfirm(!isVisibleConfirm)}
+            >
+              {isVisibleConfirm ? <Eye width={16} /> : <EyeOff width={16} />}
+            </div>
           </div>
 
           <SubmitButton
