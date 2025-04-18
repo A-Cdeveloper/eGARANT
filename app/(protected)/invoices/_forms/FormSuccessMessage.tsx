@@ -1,16 +1,22 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const FormSuccessMessage = ({ children }: { children: React.ReactNode }) => {
+const FormSuccessMessage = ({
+  children,
+  time = 3000,
+}: {
+  children: React.ReactNode;
+  time?: number;
+}) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 3000);
+    }, time);
 
     return () => clearTimeout(timer);
-  }, [visible]);
+  }, [time]);
 
   return (
     <>

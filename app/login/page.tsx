@@ -1,5 +1,3 @@
-import { getUserFromCookies } from "@/actions/auth";
-import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import Link from "next/link";
 import LoginForm from "./_components/LoginForm";
@@ -16,19 +14,7 @@ export const metadata: Metadata = {
   },
 };
 
-const LoginPage = async () => {
-  const { data: user } = await getUserFromCookies();
-
-  if (user) {
-    return (
-      <>
-        <h2 className="text-center">Vec ste prijavljeni.</h2>
-        <Button variant="secondary_full" className="self-center my-8">
-          <Link href="/">Povratak na početnu</Link>
-        </Button>
-      </>
-    );
-  }
+const LoginPage = () => {
   return (
     <div className="text-center">
       <LoginForm />

@@ -1,11 +1,15 @@
 "use server";
 
+import { hashPassword } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { User } from "@prisma/client";
-import { UserResponseTypeWithId } from "../auth";
-import { editProfileFormSchema } from "@/zod/authShemas";
 import { parseError } from "@/lib/errors";
+import {
+  editProfileFormSchema,
+  registerPasswordSchema,
+} from "@/zod/authShemas";
+import { User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { UserResponseTypeWithId } from "../auth";
 
 export type UserResponseTypeProfile = Omit<
   User,
@@ -79,5 +83,44 @@ export const editProfileData = async (
     return { data: updatedUser, error: null, success: true };
   } catch (error) {
     return { data: null, error: parseError(error), success: false };
+  }
+};
+
+export const changePassword = async (
+  prevFormData: unknown,
+  formData: FormData
+): Promise<{
+  error: string | string[] | null;
+  success: boolean;
+}> => {
+  const user = {
+    uid: formData.get("uid") as string,
+    password: formData.get("password") as string,
+  };
+
+  const parsed = registerPasswordSchema.safeParse(user.password);
+
+  if (!parsed.success) {
+    return {
+      error: parseError(parsed.error),
+      success: false,
+    };
+  }
+
+  try {
+    const hashedPassword = await hashPassword(user.password);
+    await prisma.user.update({
+      where: {
+        uid: user.uid,
+      },
+      data: {
+        passwordHash: hashedPassword,
+      },
+    });
+    revalidatePath("/profile");
+
+    return { error: null, success: true };
+  } catch (error) {
+    return { error: parseError(error), success: false };
   }
 };
