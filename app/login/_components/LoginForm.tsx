@@ -20,10 +20,13 @@ const LoginForm = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (state.error === null && state.data) {
-      setUser();
-      router.push("/");
-    }
+    const loginFunction = async () => {
+      if (state.error === null && state.data) {
+        await setUser();
+        router.push("/");
+      }
+    };
+    loginFunction();
   }, [router, setUser, state.data, state.error]);
 
   return (
