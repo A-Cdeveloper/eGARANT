@@ -38,46 +38,47 @@ const LoginForm = () => {
           {isPending ? "Prijavljivanje..." : "Prijava"}
         </CardTitle>
       </CardHeader>
-
-      <form action={action}>
-        <CardContent className="space-y-4">
-          {state.error && (
-            <>
-              <FormErrorMessages errors={state.error as string[]} />
-            </>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              name="email"
-              type="email"
-              placeholder="Unesite email"
-              defaultValue={state.data?.email}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Lozinka</Label>
-            <div className="relative">
+      {!isPending ? (
+        <form action={action}>
+          <CardContent className="space-y-4">
+            {state.error && (
+              <>
+                <FormErrorMessages errors={state.error as string[]} />
+              </>
+            )}
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
               <Input
-                type={isVisiblePass ? "text" : "password"}
-                placeholder="Unesite lozinku"
-                name="password"
+                name="email"
+                type="email"
+                placeholder="Unesite email"
+                defaultValue={state.data?.email}
               />
-              <div
-                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-                onClick={() => setIsVisiblePass(!isVisiblePass)}
-              >
-                {isVisiblePass ? <Eye width={16} /> : <EyeOff width={16} />}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Lozinka</Label>
+              <div className="relative">
+                <Input
+                  type={isVisiblePass ? "text" : "password"}
+                  placeholder="Unesite lozinku"
+                  name="password"
+                />
+                <div
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                  onClick={() => setIsVisiblePass(!isVisiblePass)}
+                >
+                  {isVisiblePass ? <Eye width={16} /> : <EyeOff width={16} />}
+                </div>
               </div>
             </div>
-          </div>
 
-          <SubmitButton className="w-full mt-3" disabled={isPending}>
-            Uloguj se
-          </SubmitButton>
-        </CardContent>
-      </form>
+            <SubmitButton className="w-full mt-3" disabled={isPending}>
+              Uloguj se
+            </SubmitButton>
+          </CardContent>
+        </form>
+      ) : null}
     </Card>
   );
 };
