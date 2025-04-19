@@ -40,12 +40,6 @@ export const loginUser = async (
     email: visitor.email,
   };
 
-  const User = {
-    firstname: visitor.email,
-    lastname: visitor.email,
-    email: visitor.email,
-  };
-
   if (!parsed.success) {
     return {
       data: noUser,
@@ -91,7 +85,11 @@ export const loginUser = async (
     });
 
     return {
-      data: User,
+      data: {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+      },
       error: null,
     };
   } catch (error) {

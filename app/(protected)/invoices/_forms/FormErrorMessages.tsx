@@ -1,11 +1,17 @@
 import React from "react";
 
-const FormErrorMessages = ({ errors }: { errors: string[] }) => {
+type FormErrorMessagesProps = {
+  errors: string | string[];
+};
+
+const FormErrorMessages = ({ errors }: FormErrorMessagesProps) => {
+  const errorList = Array.isArray(errors) ? errors : [errors];
+
   return (
     <div className="bg-red-400 text-white text-[12px] p-2 mb-2">
-      {errors.map((error) => {
-        return <p key={error}>{error}</p>;
-      })}
+      {errorList.map((error) => (
+        <p key={error}>{error}</p>
+      ))}
     </div>
   );
 };
