@@ -5,33 +5,23 @@ import prisma from "@/lib/db";
 import { parseError } from "@/lib/errors";
 import { calculateInvoiceTotal } from "@/lib/utils";
 import { getOptimizedImageURL, optimizeImage, pinata } from "@/pinata/config";
-import { InvoiceWithProducts, InvoiceWithSeller } from "@/types";
+import {
+  Failure,
+  FailureInvoices,
+  InputInvoice,
+  InvoiceWithProducts,
+  Success,
+  SuccessInvoices,
+} from "@/types";
 import { InvoiceFormSchema } from "@/zod/invoiceShemas";
 import { Invoice, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-
-//const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getAllUserInvoices = async (
   uid: string,
   filter: string | undefined = "",
   sort: string = "invoice_date-desc"
-): Promise<
-  | {
-      data: InvoiceWithSeller[];
-      count: number;
-      totalProductCount: number;
-      totalPrice: number;
-      error: null;
-    }
-  | {
-      data: null;
-      count: number;
-      totalProductCount: number;
-      totalPrice: number;
-      error: string | string[];
-    }
-> => {
+): Promise<SuccessInvoices | FailureInvoices> => {
   const [field, order] = sort.split("-") as [string, "asc" | "desc"];
 
   try {
@@ -39,7 +29,14 @@ export const getAllUserInvoices = async (
       where: {
         uid,
       },
-      include: {
+      select: {
+        iid: true,
+        sid: true,
+        uid: true,
+        invoice_date: true,
+        invoice_image: true,
+        invoice_number: true,
+        products: true,
         seller: {
           select: {
             name: true,
@@ -58,13 +55,6 @@ export const getAllUserInvoices = async (
           : undefined,
     });
 
-    const count = await prisma.invoice.count({
-      where: {
-        uid,
-      },
-    });
-
-    // Filter by product name if needed
     const filteredInvoices = filter
       ? (invoices as InvoiceWithProducts[]).filter((invoice) =>
           invoice.products.some((product) =>
@@ -96,7 +86,7 @@ export const getAllUserInvoices = async (
 
     return {
       data: sortedInvoices,
-      count,
+      count: invoices.length,
       totalProductCount,
       totalPrice,
       error: null,
@@ -116,17 +106,21 @@ export const getAllUserInvoices = async (
 export const getUserInvoice = async (
   iid: string,
   uid: string
-): Promise<
-  | { data: InvoiceWithSeller; error: null }
-  | { data: null; error: string | string[] }
-> => {
+): Promise<Success | Failure> => {
   try {
     const invoice = await prisma.invoice.findUnique({
       where: {
         iid,
         uid,
       },
-      include: {
+      select: {
+        iid: true,
+        sid: true,
+        uid: true,
+        invoice_date: true,
+        invoice_image: true,
+        invoice_number: true,
+        products: true,
         seller: {
           select: {
             name: true,
@@ -151,11 +145,10 @@ export const getUserInvoice = async (
 
 ////////////////////////////////////////////////////////////////////
 export const addInvoice = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prevFormData: any,
+  prevFormData: undefined,
   formData: FormData
 ): Promise<{
-  data: Omit<Invoice, "iid" | "invoice_number"> | null;
+  data: InputInvoice | null;
   error: string | string[] | null;
 }> => {
   const invoice = {
@@ -165,20 +158,24 @@ export const addInvoice = async (
       ? new Date(formData.get("date") as string)
       : undefined,
     invoice_image: formData.get("invoice_image") as string,
-    products: formData.get("products") as Prisma.JsonValue,
+    products: formData.get("products") ?? "[]",
   };
 
   const parsed = InvoiceFormSchema.safeParse(invoice);
 
   if (!parsed.success) {
     return {
-      data: invoice as Omit<Invoice, "iid" | "invoice_number">,
+      data: invoice as InputInvoice,
       error: parseError(parsed.error),
     };
   }
 
   try {
-    const numberOfInvoices = await prisma.invoice.count();
+    const numberOfInvoices = await prisma.invoice.count({
+      where: {
+        uid: invoice.uid,
+      },
+    });
     const newInvoice = await prisma.invoice.create({
       data: {
         ...invoice,
@@ -194,11 +191,10 @@ export const addInvoice = async (
 };
 
 export const updateInvoice = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prevFormData: any,
+  prevFormData: unknown,
   formData: FormData
 ): Promise<{
-  data: Omit<Invoice, "invoice_number"> | null;
+  data: InputInvoice | null;
   error: string | string[] | null;
 }> => {
   const invoice = {
@@ -248,10 +244,10 @@ export const deleteInvoice = async (iid: string) => {
         iid,
       },
     });
+    revalidatePath("/invoices");
   } catch (error) {
     return { data: null, error: parseError(error) };
   }
-  revalidatePath("/invoices");
 };
 
 ////////////////////////////////////////////////////////////////////
