@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/store";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 
 const LoginForm = () => {
   const [state, action] = useActionState(loginUser, {
@@ -19,11 +19,15 @@ const LoginForm = () => {
   const [isVisiblePass, setIsVisiblePass] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (state.error === null && state.data) {
       router.replace("/");
-      setUser(); // don't await — let it happen in the background
+      // low-priority state update
+      startTransition(() => {
+        setUser(); // happens in background
+      });
     }
   }, [router, setUser, state.data, state.error]);
 
@@ -32,6 +36,11 @@ const LoginForm = () => {
       <CardHeader>
         <CardTitle className="uppercase text-xl">Prijava</CardTitle>
       </CardHeader>
+
+      {isPending && (
+        <div className="text-sm text-center text-gray-500">Prijavljujem...</div>
+      )}
+
       <form action={action}>
         <CardContent className="space-y-4">
           {state.error && (
