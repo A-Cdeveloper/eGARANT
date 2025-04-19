@@ -25,9 +25,9 @@ const LoginForm = () => {
       if (state.error === null && state.data) {
         await setUser();
       }
+      router.push("/");
     };
     loginFunction();
-    router.push("/");
   }, [router, setUser, state.data, state.error]);
 
   return (
