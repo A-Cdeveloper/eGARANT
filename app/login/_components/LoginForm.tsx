@@ -34,12 +34,10 @@ const LoginForm = () => {
   return (
     <Card className="max-w-[375px] sm:w-[300px] mx-auto  bg-white rounded-none border border-gray-200 gap-3">
       <CardHeader>
-        <CardTitle className="uppercase text-xl">Prijava</CardTitle>
+        <CardTitle className="uppercase text-xl">
+          {isPending ? "Prijavljivanje..." : "Prijava"}
+        </CardTitle>
       </CardHeader>
-
-      {isPending && (
-        <div className="text-sm text-center text-gray-500">Prijavljujem...</div>
-      )}
 
       <form action={action}>
         <CardContent className="space-y-4">
@@ -75,7 +73,9 @@ const LoginForm = () => {
             </div>
           </div>
 
-          <SubmitButton className="w-full mt-3">Uloguj se</SubmitButton>
+          <SubmitButton className="w-full mt-3" disabled={isPending}>
+            Uloguj se
+          </SubmitButton>
         </CardContent>
       </form>
     </Card>
