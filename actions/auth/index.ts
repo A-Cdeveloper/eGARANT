@@ -34,13 +34,21 @@ export const loginUser = async (
 
   const parsed = loginFormSchema.safeParse(visitor);
 
+  const noUser = {
+    firstname: "",
+    lastname: "",
+    email: visitor.email,
+  };
+
+  const User = {
+    firstname: visitor.email,
+    lastname: visitor.email,
+    email: visitor.email,
+  };
+
   if (!parsed.success) {
     return {
-      data: {
-        firstname: "",
-        lastname: "",
-        email: visitor.email,
-      },
+      data: noUser,
       error: parseError(parsed.error),
     };
   }
@@ -51,11 +59,7 @@ export const loginUser = async (
     });
     if (!user) {
       return {
-        data: {
-          firstname: "",
-          lastname: "",
-          email: visitor.email,
-        },
+        data: noUser,
         error: ["Korisnik sa ovom email adresom ne postoji."],
       };
     }
@@ -66,11 +70,7 @@ export const loginUser = async (
     );
     if (!isPasswordValid) {
       return {
-        data: {
-          firstname: "",
-          lastname: "",
-          email: visitor.email,
-        },
+        data: noUser,
         error: ["Pogrešna lozinka. Pokušajte ponovo."],
       };
     }
@@ -91,11 +91,7 @@ export const loginUser = async (
     });
 
     return {
-      data: {
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-      },
+      data: User,
       error: null,
     };
   } catch (error) {
@@ -119,13 +115,15 @@ export const registerUser = async (
 
   const parsed = registerFormSchema.safeParse(visitor);
 
+  const User = {
+    firstname: visitor.firstname,
+    lastname: visitor.lastname,
+    email: visitor.email,
+  };
+
   if (!parsed.success) {
     return {
-      data: {
-        firstname: visitor.firstname,
-        lastname: visitor.lastname,
-        email: visitor.email,
-      },
+      data: User,
       error: parseError(parsed.error),
     };
   }
@@ -138,22 +136,14 @@ export const registerUser = async (
 
   if (existingUser && !existingUser?.isVerified) {
     return {
-      data: {
-        firstname: visitor.firstname,
-        lastname: visitor.lastname,
-        email: visitor.email,
-      },
+      data: User,
       error: ["Korisnik sa ovom email adresom postoji, ali nije verifikovan."],
     };
   }
 
   if (existingUser) {
     return {
-      data: {
-        firstname: visitor.firstname,
-        lastname: visitor.lastname,
-        email: visitor.email,
-      },
+      data: User,
       error: ["Korisnik sa ovom email adresom već postoji."],
     };
   }
@@ -164,9 +154,7 @@ export const registerUser = async (
 
     await prisma.user.create({
       data: {
-        firstname: visitor.firstname as string,
-        lastname: visitor.lastname as string,
-        email: visitor.email as string,
+        ...User,
         isVerified: false,
         createdAt: new Date(),
         passwordHash: hashedPassword,
@@ -177,20 +165,12 @@ export const registerUser = async (
     await sendVerificationEmail(visitor.email as string, verificationToken);
 
     return {
-      data: {
-        firstname: visitor.firstname,
-        lastname: visitor.lastname,
-        email: visitor.email,
-      },
+      data: User,
       error: null,
     };
   } catch (error) {
     return {
-      data: {
-        firstname: visitor.firstname,
-        lastname: visitor.lastname,
-        email: visitor.email,
-      },
+      data: User,
       error: parseError(error),
     };
   }
