@@ -13,9 +13,13 @@ export const Invoices = async ({
   sort: string;
   uid: string;
 }) => {
-  const { data: invoices, error } = await getAllUserInvoices(uid, filter, sort);
+  const {
+    data: invoices,
+    error,
+    count,
+  } = await getAllUserInvoices(uid, filter, sort);
 
-  if (invoices && invoices.length === 0) {
+  if (count === 0) {
     return <NoInvoices filter={filter || ""} />;
   }
 

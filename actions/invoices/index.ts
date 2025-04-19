@@ -145,7 +145,7 @@ export const getUserInvoice = async (
 
 ////////////////////////////////////////////////////////////////////
 export const addInvoice = async (
-  prevFormData: undefined,
+  prevFormData: unknown,
   formData: FormData
 ): Promise<{
   data: InputInvoice | null;
