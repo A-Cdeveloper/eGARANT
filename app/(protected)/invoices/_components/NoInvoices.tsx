@@ -1,11 +1,10 @@
-"use client";
 import Image from "next/image";
 import empty from "@/public/empty.svg";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+
+import Link from "next/link";
 
 const NoInvoices = ({ filter }: { filter: string }) => {
-  const router = useRouter();
   return (
     <div className="w-full h-[40vh] flex flex-col justify-center items-center text-center bg-white">
       <Image
@@ -21,12 +20,8 @@ const NoInvoices = ({ filter }: { filter: string }) => {
           : "Nemate sačuvane račune."}
       </h2>
       {!filter && (
-        <Button
-          size="lg"
-          variant="primary"
-          onClick={() => router.push("/invoices/add-new")}
-        >
-          Dodaj svoj prvi račun
+        <Button size="lg" variant="primary">
+          <Link href="/invoices/add-new">Dodaj svoj prvi račun</Link>
         </Button>
       )}
     </div>
