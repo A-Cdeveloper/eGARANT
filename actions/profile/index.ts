@@ -137,8 +137,8 @@ export const deleteProfile = async (uid: string) => {
         uid,
       },
     });
+    revalidatePath("/profile");
   } catch (error) {
     return { data: null, error: parseError(error) };
   }
-  revalidatePath("/profile");
 };
